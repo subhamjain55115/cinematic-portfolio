@@ -123,7 +123,7 @@ export default function PublicationsFooterSection() {
     const isMobile = window.innerWidth < 768
 
     let renderer, vidUni, rafId, videoPlaying = false
-    let onMouseMove = () => {}, onResize = () => {}
+    let onMouseMove = () => {}, onResize = () => {}, onLoaderDismissed = () => {}
 
     if (!isMobile && canvas && videoEl) {
       // ── Three.js video setup ────────────────────────────────
@@ -144,6 +144,13 @@ export default function PublicationsFooterSection() {
       videoEl.playsInline = true
       videoEl.loop      = true
       videoEl.preload   = 'auto'
+
+      // Unmute once the intro loader's Start button has fired a user
+      // gesture - same pattern VideoIntro uses, required for autoplay-with-sound.
+      onLoaderDismissed = function() {
+        videoEl.muted = false
+      }
+      window.addEventListener('loader-dismissed', onLoaderDismissed)
 
       const vidTex = new THREE.VideoTexture(videoEl)
       vidTex.minFilter = THREE.LinearFilter
@@ -318,6 +325,7 @@ export default function PublicationsFooterSection() {
       scroller.removeEventListener('scroll', onScroll)
       sticky.removeEventListener('mousemove', onMouseMove)
       window.removeEventListener('resize', onResize)
+      window.removeEventListener('loader-dismissed', onLoaderDismissed)
       if (renderer) renderer.dispose()
     }
   }, [])
