@@ -1,0 +1,135 @@
+/* ── Section ───────────────────────────────────── */
+.section {
+  height: 100vh;
+  background: #080808;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  position: relative;
+  z-index: 5;
+}
+
+.section::before {
+  content: 'CERTIFICATIONS';
+  position: absolute;
+  bottom: -0.06em;
+  right: -0.04em;
+  font-size: clamp(4rem, 9vw, 11rem);
+  font-weight: 900;
+  color: rgba(255, 255, 255, 0.022);
+  letter-spacing: -0.05em;
+  line-height: 1;
+  pointer-events: none;
+  user-select: none;
+  white-space: nowrap;
+}
+
+/* ── Header ────────────────────────────────────── */
+.header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: clamp(4rem, 7vh, 5rem) clamp(1.5rem, 5vw, 4.5rem) 0;
+  flex-shrink: 0;
+}
+
+.label {
+  font-size: var(--text-small);
+  font-weight: 700;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.labelRight {
+  font-size: var(--text-small);
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  color: rgba(255, 255, 255, 0.2);
+  font-family: var(--font-geist-mono), monospace;
+}
+
+/* ── Grid ──────────────────────────────────────── */
+.grid {
+  flex: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: clamp(1.25rem, 2.5vw, 2rem);
+  align-content: center;
+  padding: clamp(2rem, 5vh, 3rem) clamp(1.5rem, 5vw, 4.5rem) clamp(2rem, 5vh, 4rem);
+  position: relative;
+  z-index: 1;
+}
+
+.card {
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 14px;
+  padding: 1.75rem;
+  background: rgba(255, 255, 255, 0.02);
+}
+
+.issuer {
+  font-size: clamp(1.1rem, 2vw, 1.6rem);
+  font-weight: 900;
+  color: #fff;
+  letter-spacing: -0.02em;
+  text-transform: uppercase;
+  margin: 0 0 0.3rem;
+}
+
+.count {
+  display: block;
+  font-size: var(--text-small);
+  font-weight: 700;
+  color: var(--accent);
+  font-family: var(--font-geist-mono), monospace;
+  letter-spacing: 0.04em;
+  margin-bottom: 1.1rem;
+}
+
+.list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+}
+
+.item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.55rem;
+  font-size: var(--text-body);
+  line-height: 1.5;
+  color: rgba(255, 255, 255, 0.5);
+}
+
+.itemDot {
+  flex-shrink: 0;
+  width: 5px;
+  height: 5px;
+  margin-top: 0.5rem;
+  border-radius: 50%;
+  background: var(--accent);
+}
+
+/* ── Mobile (≤767px) ────────────────────────────── */
+@media (max-width: 767px) {
+  .section { height: auto; min-height: 100svh; overflow-y: auto; }
+
+  .header {
+    padding: 3.5rem clamp(1rem, 4vw, 1.5rem) 0;
+  }
+
+  .grid {
+    grid-template-columns: 1fr;
+    padding-top: 1.5rem;
+  }
+}
+
+/* ── Tablet (768–1023px) ────────────────────────── */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .header { padding-top: clamp(1.5rem, 5vh, 3rem); }
+  .grid   { grid-template-columns: repeat(2, 1fr); }
+}

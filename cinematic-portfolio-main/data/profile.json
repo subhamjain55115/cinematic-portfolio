@@ -1,0 +1,268 @@
+{
+  "name": {
+    "first": "Subham",
+    "last": "Jain",
+    "full": "Subham Jain"
+  },
+  "email": "contact@subhamjain.com",
+  "phone": "+91 70230 55115",
+  "tagline": "Building configurable React interfaces for enterprise lending and fintech platforms.",
+  "description": "Frontend Developer with 5+ years of experience across scalable fintech and enterprise-grade applications, currently leading frontend architecture for a configurable Loan Origination and Loan Management SaaS platform.",
+  "roles": {
+    "short": "Frontend Developer",
+    "detailed": "Lead Frontend Developer | Fintech & Lending Platforms | React + Redux Toolkit"
+  },
+  "location": {
+    "based": "Jaipur, India",
+    "availability": "Jaipur / Remote"
+  },
+  "available": true,
+  "bio": "Frontend Developer with 5+ years of experience designing and building scalable fintech and enterprise-grade applications. Currently leading frontend architecture for a configurable Loan Origination System (LOS) and Loan Management System (LMS) SaaS platform, architecting modular multi-tenant systems with React and Redux Toolkit. Experienced across underwriting workflows, Agentic AI integrations, CRM automation, and component-driven design systems for banking and lending products.",
+  "stats": [
+    { "value": "5+", "label": "Years Experience" },
+    { "value": "150+", "label": "Reusable Components" },
+    { "value": "5", "label": "Companies" }
+  ],
+  "skills": [
+    "React.js",
+    "Redux Toolkit",
+    "JavaScript (ES6+)",
+    "Tailwind CSS",
+    "Material UI",
+    "Recharts",
+    "REST API Integration",
+    "Git/GitHub",
+    "Agile/Scrum",
+    "Responsive Web Design",
+    "Test-Driven Development",
+    "Fintech & Lending Systems"
+  ],
+  "experience": [
+    {
+      "id": 1,
+      "role": "Lead Frontend Developer",
+      "company": "Photon Matters India Private Limited",
+      "companyShort": "PHOTON MATTERS",
+      "type": "Full-time",
+      "location": "Jaipur, India",
+      "period": "Jun 2024",
+      "periodEnd": "Present",
+      "bullets": [
+        "Designed and implemented 150+ reusable enterprise components for configurable Loan Origination (LOS) and Loan Management (LMS) platforms.",
+        "Built configurable modules for Risk Assessment Criteria, Credit Score models, Debt Burden Ratio, Total Credit Limit, and dynamic multi-level approval workflows.",
+        "Orchestrated an Agentic AI engine for contextual borrower engagement, chatbot-driven onboarding, and intelligent ticketing integration across the loan lifecycle.",
+        "Led frontend architecture decisions, code reviews, mentoring, and CRM/webhook integrations synchronizing borrower data with LMS in real time."
+      ],
+      "desc": "Leading frontend architecture for a configurable multi-tenant Loan Origination & Loan Management SaaS platform, spanning underwriting workflows, AI-assisted borrower engagement, and CRM automation.",
+      "tech": ["React", "Redux Toolkit", "JavaScript", "REST APIs", "Agentic AI", "CRM Integration", "Fintech"]
+    },
+    {
+      "id": 2,
+      "role": "React Developer",
+      "company": "BlackBeltHelp",
+      "companyShort": "BLACKBELTHELP",
+      "type": "Full-time",
+      "location": "Remote",
+      "period": "Feb 2024",
+      "periodEnd": "May 2024",
+      "bullets": [
+        "Collaborated with UX/UI designers to enhance chatbot user experience.",
+        "Continuously improved chatbot understanding and response accuracy."
+      ],
+      "desc": "Chatbot UX collaboration and iterative improvement of conversational response quality.",
+      "tech": ["React", "JavaScript", "Chatbot UX"]
+    },
+    {
+      "id": 3,
+      "role": "Web Developer",
+      "company": "Kamakhya Infocom LLP",
+      "companyShort": "KAMAKHYA INFOCOM",
+      "type": "Full-time",
+      "location": "India",
+      "period": "Jan 2022",
+      "periodEnd": "Jan 2024",
+      "bullets": [
+        "Designed and developed new features and functions for client web applications.",
+        "Developed robust web apps using HTML, CSS, JavaScript, and React."
+      ],
+      "desc": "Feature development and robust web application delivery using the React ecosystem.",
+      "tech": ["React", "JavaScript", "HTML5", "CSS3"]
+    },
+    {
+      "id": 4,
+      "role": "Web Developer",
+      "company": "Risovation",
+      "companyShort": "RISOVATION",
+      "type": "Full-time",
+      "location": "India",
+      "period": "Dec 2020",
+      "periodEnd": "Jan 2022",
+      "bullets": [
+        "Tailored and crafted UI to meet specific client needs.",
+        "Ensured web functionality using HTML, CSS, JS & React."
+      ],
+      "desc": "Client UI delivery and cross-browser web functionality across HTML, CSS, JS, and React.",
+      "tech": ["React", "JavaScript", "HTML5", "CSS3"]
+    }
+  ],
+  "projects": [
+    {
+      "id": 1,
+      "title": "Crypto Tracker",
+      "subtitle": "Real-Time Crypto Price Tracker",
+      "type": "Web App",
+      "link": "https://crypto-tracker-navy-ten.vercel.app/",
+      "image": "/assets/projects/crypto-tracker.svg",
+      "tech": ["React", "REST API", "Data Visualization"],
+      "desc": "A live cryptocurrency price tracker with real-time market data, search, and price charts."
+    },
+    {
+      "id": 2,
+      "title": "YouTube Clone",
+      "subtitle": "Video Platform UI Clone",
+      "type": "Clone Project",
+      "link": "https://youtubr-clone-react.vercel.app/",
+      "image": "/assets/projects/youtube-clone.svg",
+      "tech": ["React", "Responsive UI", "REST API"],
+      "desc": "A pixel-accurate YouTube interface clone covering video feed, search, and responsive layout patterns."
+    },
+    {
+      "id": 3,
+      "title": "Image Bazar",
+      "subtitle": "Infinite Scroll Image Gallery",
+      "type": "Web App",
+      "link": "https://image-bazar-infinityscroll.vercel.app/",
+      "image": "/assets/projects/image-bazar.svg",
+      "tech": ["React", "Infinite Scroll", "REST API"],
+      "desc": "An image marketplace UI with infinite scroll pagination, lazy loading, and a masonry-style gallery."
+    },
+    {
+      "id": 4,
+      "title": "3D Portfolio",
+      "subtitle": "Interactive Three.js Portfolio",
+      "type": "Portfolio",
+      "link": "https://my-protfolio-react-three.vercel.app/",
+      "image": "/assets/projects/three-portfolio.svg",
+      "tech": ["React", "Three.js", "React Three Fiber"],
+      "desc": "An earlier interactive portfolio experiment combining React with Three.js for 3D scenes and motion."
+    },
+    {
+      "id": 5,
+      "title": "To-Do List",
+      "subtitle": "Task Manager",
+      "type": "Web App",
+      "link": "https://to-do-list-react-woad-zeta.vercel.app/",
+      "image": "/assets/projects/todo-list.svg",
+      "tech": ["React", "Local Storage", "CRUD"],
+      "desc": "A lightweight task management app with create, complete, and delete flows and persistent local storage."
+    },
+    {
+      "id": 6,
+      "title": "Blinkit Clone",
+      "subtitle": "Quick-Commerce UI Clone",
+      "type": "Clone Project",
+      "link": "https://subham7769.github.io/Blinkit-clone/",
+      "image": "/assets/projects/blinkit-clone.svg",
+      "tech": ["JavaScript", "HTML5", "CSS3"],
+      "desc": "A front-end clone of the Blinkit quick-commerce experience, focused on catalog browsing and cart UI."
+    },
+    {
+      "id": 7,
+      "title": "AccioJob Portal",
+      "subtitle": "Learning Portal UI",
+      "type": "Web App",
+      "link": "https://subham7769.github.io/Acciojob-New-Portal/",
+      "image": "/assets/projects/acciojob-portal.svg",
+      "tech": ["JavaScript", "HTML5", "CSS3"],
+      "desc": "A redesigned learning-portal interface built during the AccioJob frontend apprenticeship."
+    },
+    {
+      "id": 8,
+      "title": "Otarea",
+      "subtitle": "Frontend UI Build",
+      "type": "Web App",
+      "link": "https://subham7769.github.io/Otarea/",
+      "image": "/assets/projects/otarea.svg",
+      "tech": ["JavaScript", "HTML5", "CSS3"],
+      "desc": "A standalone frontend build exploring layout and interaction patterns."
+    },
+    {
+      "id": 9,
+      "title": "Food Delivery",
+      "subtitle": "Food Delivery App UI",
+      "type": "Clone Project",
+      "link": "https://subham7769.github.io/Food-delivery/",
+      "image": "/assets/projects/food-delivery.svg",
+      "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
+      "desc": "A food-delivery app interface covering menu browsing, cart, and checkout UI flows."
+    }
+  ],
+  "certifications": [
+    {
+      "issuer": "Meta",
+      "items": [
+        { "title": "Introduction to Front-End Development" },
+        { "title": "React Basics" },
+        { "title": "React Advanced" },
+        { "title": "Programming with JavaScript" },
+        { "title": "Version Control" },
+        { "title": "HTML and CSS in Depth" }
+      ]
+    },
+    {
+      "issuer": "TCS",
+      "items": [
+        { "title": "Develop Soft Skills that Industry Demands" },
+        { "title": "Learn Corporate Etiquette" }
+      ]
+    },
+    {
+      "issuer": "Atlassian",
+      "items": [
+        { "title": "Agile with Atlassian Jira" }
+      ]
+    }
+  ],
+  "publications": [
+    {
+      "id": 1,
+      "title": "Configurable LOS/LMS Frontend Architecture",
+      "platform": "Practice Area",
+      "year": "2026",
+      "link": "mailto:contact@subhamjain.com",
+      "desc": "150+ reusable components powering Risk Assessment, Credit Scoring, Debt Burden Ratio, and multi-level approval workflows for enterprise lending platforms."
+    },
+    {
+      "id": 2,
+      "title": "Agentic AI Borrower Engagement",
+      "platform": "Practice Area",
+      "year": "2026",
+      "link": "mailto:contact@subhamjain.com",
+      "desc": "Orchestrated an AI engine enabling chatbot-driven borrower onboarding, contextual routing, and intelligent ticketing across the loan lifecycle."
+    },
+    {
+      "id": 3,
+      "title": "CRM & Webhook Automation for Lending",
+      "platform": "Practice Area",
+      "year": "2026",
+      "link": "mailto:contact@subhamjain.com",
+      "desc": "Real-time CRM-to-LMS synchronization, dynamic multi-step lending forms, and campaign automation streamlining lead-to-approval journeys."
+    },
+    {
+      "id": 4,
+      "title": "Open Source & Side Projects",
+      "platform": "GitHub",
+      "year": "2026",
+      "link": "https://github.com/subhamjain55115",
+      "desc": "Independent builds spanning React, Three.js, and UI experiments — see Featured Work for live demos."
+    }
+  ],
+  "socials": [
+    { "label": "GitHub",    "href": "https://github.com/subhamjain55115" },
+    { "label": "LinkedIn",  "href": "https://www.linkedin.com/in/shubhamjain55115/" },
+    { "label": "Instagram", "href": "https://www.instagram.com/subhamjain55115/" },
+    { "label": "Facebook",  "href": "https://www.facebook.com/subhamjain55115" },
+    { "label": "Threads",   "href": "https://www.threads.com/@subhamjain55115" },
+    { "label": "WhatsApp",  "href": "https://wa.me/917023055115?text=Hi%20Subham" }
+  ]
+}

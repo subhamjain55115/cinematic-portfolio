@@ -1,0 +1,22 @@
+{
+  "site": {
+    "tagline": "Portfolio 2026"
+  },
+  "hero": {
+    "taglineHighlight": "React",
+    "freelanceNote": "Open to frontend engineering, fintech platforms, and React/Redux Toolkit opportunities.",
+    "availableLabel": "Available for opportunities",
+    "pills": ["Frontend Developer", "React + Redux Toolkit", "Fintech & Lending", "Agentic AI"],
+    "specialistStat": { "value": "React + Redux", "label": "Specialist" }
+  },
+  "interstitial": {
+    "availabilityLabel": "Availability",
+    "basedInLabel": "Based in",
+    "statLabels": ["Years\nexperience", "Reusable\ncomponents", "Companies\nworked"]
+  },
+  "footer": {
+    "eyebrow": "Available for frontend & fintech engineering roles",
+    "ctaLines": ["Building reliable", "lending experiences"],
+    "ctaAccent": "at scale."
+  }
+}
