@@ -32,7 +32,6 @@ export default function CertificationsSection() {
               alt={profile.name.full}
               className={styles.panelPhoto}
             />
-            <div className={styles.panelPhotoOverlay} aria-hidden />
           </div>
 
           <p className={styles.panelLabel}>Certifications</p>
