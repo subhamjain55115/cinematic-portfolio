@@ -17,3 +17,4 @@ Heed deprecation notices.
 - **Three.js components** (`components/three/`) must be loaded with `dynamic(..., { ssr: false })` — they use browser APIs.
 - **`PublicationsFooterSection`** is a 300 vh sticky section covering 3 scroll steps. Do not split it into separate sections without updating `TOTAL` in `page.js`.
 - **`TOTAL` in `page.js`** is derived (`8 + profile.projects.length`) and `Navbar.jsx` computes its `NAV_ITEMS` indices the same way. If you add/remove a fixed-height section, update both formulas together.
+- **`components/ui/infinite-drag-scroll.jsx`** (used by `CertificationsSection`) is a Tailwind + Motion (`motion/react`) component, not GSAP — it's the one deliberate exception to the GSAP-only rule, ported from a third-party (21st.dev) component. It stops wheel/touch events from bubbling to `main` so panning the gallery doesn't trigger `page.js`'s global section-snap; preserve that when editing it.

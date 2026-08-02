@@ -3,14 +3,14 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import profile from '@/data/profile.json'
+import { DraggableContainer, GridBody, GridItem } from '@/components/ui/infinite-drag-scroll'
 import styles from '@/styles/sections/CertificationsSection.module.css'
 
-const GROUPS = profile.certifications
-const TOTAL_CERTS = GROUPS.reduce((sum, g) => sum + g.items.length, 0)
+const CERTS = profile.certifications
 
 export default function CertificationsSection() {
   const sectionRef = useRef(null)
-  const cardRefs    = useRef([])
+  const headerRef   = useRef(null)
 
   useEffect(() => {
     const section = sectionRef.current
@@ -22,14 +22,12 @@ export default function CertificationsSection() {
     let isActive = false
 
     function resetAnim() {
-      cardRefs.current.forEach(el => el && gsap.set(el, { opacity: 0, y: 28 }))
+      gsap.set(headerRef.current, { opacity: 0, y: 20 })
     }
 
     function playAnim() {
       resetAnim()
-      gsap.to(cardRefs.current.filter(Boolean), {
-        opacity: 1, y: 0, duration: 0.6, ease: 'power3.out', stagger: 0.1,
-      })
+      gsap.to(headerRef.current, { opacity: 1, y: 0, duration: 0.6, ease: 'power3.out' })
     }
 
     resetAnim()
@@ -47,30 +45,26 @@ export default function CertificationsSection() {
   return (
     <section ref={sectionRef} className={styles.section}>
 
-      <div className={styles.header}>
+      <div ref={headerRef} className={styles.header}>
         <span className={styles.label}>Certifications</span>
-        <span className={styles.labelRight}>0{TOTAL_CERTS} Credentials</span>
+        <span className={styles.labelRight}>0{CERTS.length} Credentials &middot; Drag to explore</span>
       </div>
 
-      <div className={styles.grid}>
-        {GROUPS.map((group, i) => (
-          <div
-            key={group.issuer}
-            ref={el => { cardRefs.current[i] = el }}
-            className={styles.card}
-          >
-            <h2 className={styles.issuer}>{group.issuer}</h2>
-            <span className={styles.count}>0{group.items.length} certificate{group.items.length > 1 ? 's' : ''}</span>
-            <ul className={styles.list}>
-              {group.items.map(item => (
-                <li key={item.title} className={styles.item}>
-                  <span className={styles.itemDot} aria-hidden />
-                  {item.title}
-                </li>
-              ))}
-            </ul>
-          </div>
-        ))}
+      <div className={styles.galleryArea}>
+        <DraggableContainer variant="masonry">
+          <GridBody>
+            {CERTS.map((cert) => (
+              <GridItem key={cert.id} className={styles.certTile}>
+                <img
+                  src={cert.image}
+                  alt={`${cert.title} certificate from ${cert.issuer}`}
+                  className={styles.certImg}
+                  draggable={false}
+                />
+              </GridItem>
+            ))}
+          </GridBody>
+        </DraggableContainer>
       </div>
 
     </section>

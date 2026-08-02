@@ -112,7 +112,7 @@
       "subtitle": "Real-Time Crypto Price Tracker",
       "type": "Web App",
       "link": "https://crypto-tracker-navy-ten.vercel.app/",
-      "image": "/assets/projects/crypto-tracker.svg",
+      "image": "/assets/projects/crypto-tracker.png",
       "tech": ["React", "REST API", "Data Visualization"],
       "desc": "A live cryptocurrency price tracker with real-time market data, search, and price charts."
     },
@@ -122,7 +122,7 @@
       "subtitle": "Video Platform UI Clone",
       "type": "Clone Project",
       "link": "https://youtubr-clone-react.vercel.app/",
-      "image": "/assets/projects/youtube-clone.svg",
+      "image": "/assets/projects/youtube-clone.png",
       "tech": ["React", "Responsive UI", "REST API"],
       "desc": "A pixel-accurate YouTube interface clone covering video feed, search, and responsive layout patterns."
     },
@@ -132,7 +132,7 @@
       "subtitle": "Infinite Scroll Image Gallery",
       "type": "Web App",
       "link": "https://image-bazar-infinityscroll.vercel.app/",
-      "image": "/assets/projects/image-bazar.svg",
+      "image": "/assets/projects/image-bazar.png",
       "tech": ["React", "Infinite Scroll", "REST API"],
       "desc": "An image marketplace UI with infinite scroll pagination, lazy loading, and a masonry-style gallery."
     },
@@ -142,7 +142,7 @@
       "subtitle": "Interactive Three.js Portfolio",
       "type": "Portfolio",
       "link": "https://my-protfolio-react-three.vercel.app/",
-      "image": "/assets/projects/three-portfolio.svg",
+      "image": "/assets/projects/three-portfolio.jpeg",
       "tech": ["React", "Three.js", "React Three Fiber"],
       "desc": "An earlier interactive portfolio experiment combining React with Three.js for 3D scenes and motion."
     },
@@ -162,7 +162,7 @@
       "subtitle": "Quick-Commerce UI Clone",
       "type": "Clone Project",
       "link": "https://subham7769.github.io/Blinkit-clone/",
-      "image": "/assets/projects/blinkit-clone.svg",
+      "image": "/assets/projects/blinkit-clone.png",
       "tech": ["JavaScript", "HTML5", "CSS3"],
       "desc": "A front-end clone of the Blinkit quick-commerce experience, focused on catalog browsing and cart UI."
     },
@@ -172,7 +172,7 @@
       "subtitle": "Learning Portal UI",
       "type": "Web App",
       "link": "https://subham7769.github.io/Acciojob-New-Portal/",
-      "image": "/assets/projects/acciojob-portal.svg",
+      "image": "/assets/projects/acciojob-portal.png",
       "tech": ["JavaScript", "HTML5", "CSS3"],
       "desc": "A redesigned learning-portal interface built during the AccioJob frontend apprenticeship."
     },
@@ -182,7 +182,7 @@
       "subtitle": "Frontend UI Build",
       "type": "Web App",
       "link": "https://subham7769.github.io/Otarea/",
-      "image": "/assets/projects/otarea.svg",
+      "image": "/assets/projects/otarea.png",
       "tech": ["JavaScript", "HTML5", "CSS3"],
       "desc": "A standalone frontend build exploring layout and interaction patterns."
     },
@@ -192,36 +192,34 @@
       "subtitle": "Food Delivery App UI",
       "type": "Clone Project",
       "link": "https://subham7769.github.io/Food-delivery/",
-      "image": "/assets/projects/food-delivery.svg",
+      "image": "/assets/projects/food-delivery.png",
       "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
       "desc": "A food-delivery app interface covering menu browsing, cart, and checkout UI flows."
     }
   ],
   "certifications": [
-    {
-      "issuer": "Meta",
-      "items": [
-        { "title": "Introduction to Front-End Development" },
-        { "title": "React Basics" },
-        { "title": "React Advanced" },
-        { "title": "Programming with JavaScript" },
-        { "title": "Version Control" },
-        { "title": "HTML and CSS in Depth" }
-      ]
-    },
-    {
-      "issuer": "TCS",
-      "items": [
-        { "title": "Develop Soft Skills that Industry Demands" },
-        { "title": "Learn Corporate Etiquette" }
-      ]
-    },
-    {
-      "issuer": "Atlassian",
-      "items": [
-        { "title": "Agile with Atlassian Jira" }
-      ]
-    }
+    { "id": 1, "title": "Agile with Atlassian Jira", "issuer": "Atlassian University", "year": "2024", "image": "/assets/Certificate/cert-atlassian-agile-jira.png" },
+    { "id": 2, "title": "Advanced React", "issuer": "Meta", "year": "2024", "image": "/assets/Certificate/cert-meta-advanced-react.png" },
+    { "id": 3, "title": "HTML and CSS in Depth", "issuer": "Meta", "year": "2023", "image": "/assets/Certificate/cert-meta-html-css-in-depth.png" },
+    { "id": 4, "title": "Introduction to Front-End Development", "issuer": "Meta", "year": "2023", "image": "/assets/Certificate/cert-meta-intro-frontend-dev.png" },
+    { "id": 5, "title": "Programming with JavaScript", "issuer": "Meta", "year": "2023", "image": "/assets/Certificate/cert-meta-programming-javascript.png" },
+    { "id": 6, "title": "React Basics", "issuer": "Meta", "year": "2023", "image": "/assets/Certificate/cert-meta-react-basics.png" },
+    { "id": 7, "title": "Version Control", "issuer": "Meta", "year": "2023", "image": "/assets/Certificate/cert-meta-version-control.png" },
+    { "id": 8, "title": "Web Development Internship", "issuer": "TechOctaNet Services", "year": "2023", "image": "/assets/Certificate/cert-octanet-web-dev-internship.png" },
+    { "id": 9, "title": "Be Prepared for Group Discussions", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-group-discussions.png" },
+    { "id": 10, "title": "Learn Corporate Etiquette", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-corporate-etiquette.png" },
+    { "id": 11, "title": "Write an Effective Email", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-effective-email.png" },
+    { "id": 12, "title": "Improve Interpersonal Skills for Better Results", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-interpersonal-skills.png" },
+    { "id": 13, "title": "Learn Corporate Telephone Etiquette", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-telephone-etiquette.png" },
+    { "id": 14, "title": "Prepare a Strong Resume and Cover Letter", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-resume-cover-letter.png" },
+    { "id": 15, "title": "Make Impactful Presentations", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-impactful-presentations.png" },
+    { "id": 16, "title": "Develop Soft Skills that Industry Demands", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-soft-skills.png" },
+    { "id": 17, "title": "Understand How to Ace Corporate Interviews", "issuer": "TCS iON", "year": "2023", "image": "/assets/Certificate/cert-tcs-ace-interviews.png" },
+    { "id": 18, "title": "Guinness World Records - Record Holder", "issuer": "Guinness World Records", "year": "2026", "image": "/assets/Certificate/cert-guinness-world-record.png" },
+    { "id": 19, "title": "AI Training Hackathon", "issuer": "Kanz AI", "year": "2026", "image": "/assets/Certificate/cert-kanz-ai-hackathon.png" },
+    { "id": 20, "title": "Basics of Java - Part I", "issuer": "Coding Ninjas", "year": "2025", "image": "/assets/Certificate/cert-codingninjas-java-part1.png" },
+    { "id": 21, "title": "Basics of Java - Part II", "issuer": "Coding Ninjas", "year": "2025", "image": "/assets/Certificate/cert-codingninjas-java-part2.png" },
+    { "id": 22, "title": "MERN Full Stack Development", "issuer": "AccioJob", "year": "2024", "image": "/assets/Certificate/cert-acciojob-mern-fullstack.png" }
   ],
   "publications": [
     {
