@@ -26,12 +26,14 @@ export default function CertificationsSection() {
         <MarqueeColumn items={COLUMN_A} direction="down" duration={46} onSelect={setSelected} />
 
         <div className={styles.centerPanel}>
-          <div className={styles.panelPhotoWrap}>
-            <img
-              src="/assets/subham-about3.png"
-              alt={profile.name.full}
-              className={styles.panelPhoto}
-            />
+          <div className={styles.panelPhotoGlow}>
+            <div className={styles.panelPhotoWrap}>
+              <img
+                src="/assets/subham-about3.png"
+                alt={profile.name.full}
+                className={styles.panelPhoto}
+              />
+            </div>
           </div>
 
           <p className={styles.panelLabel}>Certifications</p>
@@ -41,7 +43,7 @@ export default function CertificationsSection() {
           </p>
 
           <div className={styles.panelStat}>
-            <span className={styles.panelStatValue}>{String(CERTS.length).padStart(3, '0')}</span>
+            <span className={styles.panelStatValue}>{CERTS.length}</span>
             <span className={styles.panelStatLabel}>Credentials</span>
           </div>
         </div>

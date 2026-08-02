@@ -117,26 +117,6 @@
       "desc": "A live cryptocurrency price tracker with real-time market data, search, and price charts."
     },
     {
-      "id": 2,
-      "title": "YouTube Clone",
-      "subtitle": "Video Platform UI Clone",
-      "type": "Clone Project",
-      "link": "https://youtubr-clone-react.vercel.app/",
-      "image": "/assets/projects/youtube-clone.png",
-      "tech": ["React", "Responsive UI", "REST API"],
-      "desc": "A pixel-accurate YouTube interface clone covering video feed, search, and responsive layout patterns."
-    },
-    {
-      "id": 3,
-      "title": "Image Bazar",
-      "subtitle": "Infinite Scroll Image Gallery",
-      "type": "Web App",
-      "link": "https://image-bazar-infinityscroll.vercel.app/",
-      "image": "/assets/projects/image-bazar.png",
-      "tech": ["React", "Infinite Scroll", "REST API"],
-      "desc": "An image marketplace UI with infinite scroll pagination, lazy loading, and a masonry-style gallery."
-    },
-    {
       "id": 4,
       "title": "3D Portfolio",
       "subtitle": "Interactive Three.js Portfolio",
@@ -145,16 +125,6 @@
       "image": "/assets/projects/three-portfolio.jpeg",
       "tech": ["React", "Three.js", "React Three Fiber"],
       "desc": "An earlier interactive portfolio experiment combining React with Three.js for 3D scenes and motion."
-    },
-    {
-      "id": 5,
-      "title": "To-Do List",
-      "subtitle": "Task Manager",
-      "type": "Web App",
-      "link": "https://to-do-list-react-woad-zeta.vercel.app/",
-      "image": "/assets/projects/todo-list.svg",
-      "tech": ["React", "Local Storage", "CRUD"],
-      "desc": "A lightweight task management app with create, complete, and delete flows and persistent local storage."
     },
     {
       "id": 6,
@@ -175,16 +145,6 @@
       "image": "/assets/projects/acciojob-portal.png",
       "tech": ["JavaScript", "HTML5", "CSS3"],
       "desc": "A redesigned learning-portal interface built during the AccioJob frontend apprenticeship."
-    },
-    {
-      "id": 8,
-      "title": "Otarea",
-      "subtitle": "Frontend UI Build",
-      "type": "Web App",
-      "link": "https://subham7769.github.io/Otarea/",
-      "image": "/assets/projects/otarea.png",
-      "tech": ["JavaScript", "HTML5", "CSS3"],
-      "desc": "A standalone frontend build exploring layout and interaction patterns."
     },
     {
       "id": 9,

@@ -49,7 +49,10 @@ const VID_FRAG = `
     vec2 uv = vUv;
     if (uCanvasAspect > uVideoAspect) {
       float s = uVideoAspect / uCanvasAspect;
-      uv.y = (vUv.y - 0.5) * s + 0.5;
+      // +0.1 shifts the crop window toward the top of the source video,
+      // trading a bit of extra crop at the bottom to stop cutting off
+      // headroom above the face.
+      uv.y = (vUv.y - 0.5) * s + 0.5 + 0.1;
     } else {
       float s = uCanvasAspect / uVideoAspect;
       uv.x = (vUv.x - 0.5) * s + 0.5;
