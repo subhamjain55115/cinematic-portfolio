@@ -24,16 +24,161 @@
   white-space: nowrap;
 }
 
-/* ── Header ────────────────────────────────────── */
-.header {
+/* ── 3-column layout: marquee | fixed panel | marquee ─── */
+.contentGrid {
+  flex: 1;
+  min-height: 0;
+  display: grid;
+  grid-template-columns: 1fr minmax(300px, 380px) 1fr;
+  gap: clamp(1rem, 3vw, 2.5rem);
+  padding: clamp(2rem, 5vh, 3.5rem) clamp(1rem, 4vw, 3rem);
+  position: relative;
+  z-index: 1;
+}
+
+/* ── Marquee column ────────────────────────────── */
+.marqueeViewport {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+  mask-image: linear-gradient(to bottom, transparent, #000 8%, #000 92%, transparent);
+}
+
+.marqueeTrack {
   display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 100%;
+  animation-name: marqueeScroll;
+  animation-timing-function: linear;
+  animation-iteration-count: infinite;
+  will-change: transform;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateY(0); }
+  to   { transform: translateY(-50%); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .marqueeTrack { animation-play-state: paused !important; }
+}
+
+/* ── Certificate card ──────────────────────────── */
+.card {
+  position: relative;
+  display: block;
+  width: 100%;
+  border: none;
+  padding: 0;
+  text-align: left;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  background: #0d0d0d;
+  box-shadow: 0 20px 45px -14px rgba(0, 0, 0, 0.6);
+  transform: rotate(var(--tilt));
+  transition: transform 0.28s ease, box-shadow 0.28s ease;
+}
+
+.card:hover {
+  transform: rotate(0deg) scale(1.05);
+  z-index: 5;
+  box-shadow: 0 24px 55px -12px rgba(0, 0, 0, 0.75), 0 0 0 1px rgba(247, 147, 30, 0.35);
+}
+
+.cardImg {
+  display: block;
+  width: 100%;
+  height: auto;
+  filter: brightness(0.6);
+  transition: filter 0.28s ease;
+}
+
+.card:hover .cardImg { filter: brightness(0.78); }
+
+.cardOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba(4, 4, 4, 0.97) 0%,
+    rgba(4, 4, 4, 0.5) 38%,
+    transparent 68%
+  );
+  transition: opacity 0.28s ease;
+}
+
+.card:hover .cardOverlay { opacity: 0.72; }
+
+.cardText {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  padding: 0.85rem 0.9rem;
+  z-index: 2;
+}
+
+.cardTitle {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #fff;
+  line-height: 1.25;
+}
+
+.cardMeta {
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.55);
+}
+
+/* ── Center panel (fixed, vertically centered) ─── */
+.centerPanel {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   align-items: center;
-  justify-content: space-between;
-  padding: clamp(4rem, 7vh, 5rem) clamp(1.5rem, 5vw, 4.5rem) 0;
+  justify-content: center;
+  text-align: center;
+  gap: 1rem;
+  z-index: 3;
+}
+
+.panelPhotoWrap {
+  position: relative;
+  width: 128px;
+  height: 128px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
   flex-shrink: 0;
 }
 
-.label {
+.panelPhoto {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: center top;
+  filter: saturate(0.38) brightness(0.62);
+}
+
+.panelPhotoOverlay {
+  position: absolute;
+  inset: 0;
+  background: rgba(8, 8, 8, 0.62);
+}
+
+.panelLabel {
   font-size: var(--text-small);
   font-weight: 700;
   letter-spacing: 0.24em;
@@ -41,32 +186,77 @@
   color: var(--accent);
 }
 
-.labelRight {
-  font-size: var(--text-small);
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  color: rgba(255, 255, 255, 0.2);
+.panelHeading {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 900;
+  letter-spacing: -0.03em;
+  text-transform: uppercase;
+  color: #fff;
+  line-height: 1;
+}
+
+.panelSub {
+  font-size: var(--text-body);
+  color: rgba(255, 255, 255, 0.5);
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+.panelStat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.4rem;
+}
+
+.panelStatValue {
   font-family: var(--font-geist-mono), monospace;
+  font-size: clamp(2rem, 4vw, 2.8rem);
+  font-weight: 900;
+  letter-spacing: -0.04em;
+  color: #fff;
+  line-height: 1;
 }
 
-/* ── Draggable gallery ─────────────────────────── */
-.galleryArea {
-  flex: 1;
-  min-height: 0;
-  position: relative;
-  z-index: 1;
+.panelStatLabel {
+  font-size: 0.62rem;
+  font-weight: 700;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
 }
 
-/* ── Mobile (≤767px) ────────────────────────────── */
+/* ── Mobile (≤767px): panel stacks above the two columns ── */
 @media (max-width: 767px) {
   .section { height: 100svh; overflow: hidden; }
 
-  .header {
-    padding: 3.5rem clamp(1rem, 4vw, 1.5rem) 0;
+  .contentGrid {
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: auto 1fr;
+    gap: 0.75rem;
+    padding: 3.5rem 0.75rem 1rem;
   }
+
+  .centerPanel {
+    grid-column: 1 / -1;
+    grid-row: 1;
+    height: auto;
+    gap: 0.5rem;
+  }
+
+  .marqueeViewport { grid-row: 2; }
+
+  .panelPhotoWrap { width: 76px; height: 76px; }
+  .panelSub { display: none; }
+  .panelStat { margin-top: 0.1rem; }
+
+  .cardTitle { font-size: 0.68rem; }
+  .cardMeta  { font-size: 0.54rem; }
 }
 
-/* ── Tablet (768–1023px) ────────────────────────── */
+/* ── Tablet (768–1023px) ─────────────────────────── */
 @media (min-width: 768px) and (max-width: 1023px) {
-  .header { padding-top: clamp(1.5rem, 5vh, 3rem); }
+  .contentGrid { grid-template-columns: 1fr minmax(240px, 300px) 1fr; }
+  .panelPhotoWrap { width: 100px; height: 100px; }
 }
