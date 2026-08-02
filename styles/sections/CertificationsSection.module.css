@@ -57,23 +57,6 @@
   z-index: 1;
 }
 
-.certTile {
-  position: relative;
-  width: 220px;
-  height: 165px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  background: #111;
-}
-
-.certImg {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  pointer-events: none;
-}
-
 /* ── Mobile (≤767px) ────────────────────────────── */
 @media (max-width: 767px) {
   .section { height: 100svh; overflow: hidden; }
@@ -81,22 +64,9 @@
   .header {
     padding: 3.5rem clamp(1rem, 4vw, 1.5rem) 0;
   }
-
-  .certTile {
-    width: 168px;
-    height: 126px;
-  }
 }
 
 /* ── Tablet (768–1023px) ────────────────────────── */
 @media (min-width: 768px) and (max-width: 1023px) {
   .header { padding-top: clamp(1.5rem, 5vh, 3rem); }
-}
-
-/* ── Desktop (≥1024px) ──────────────────────────── */
-@media (min-width: 1024px) {
-  .certTile {
-    width: 340px;
-    height: 255px;
-  }
 }

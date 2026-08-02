@@ -3,10 +3,16 @@
 import { useEffect, useRef } from 'react'
 import { gsap } from '@/lib/gsap'
 import profile from '@/data/profile.json'
-import { DraggableContainer, GridBody, GridItem } from '@/components/ui/infinite-drag-scroll'
+import BentoGallery from '@/components/ui/bento-gallery'
 import styles from '@/styles/sections/CertificationsSection.module.css'
 
 const CERTS = profile.certifications
+const GALLERY_ITEMS = CERTS.map((cert) => ({
+  id: cert.id,
+  title: cert.title,
+  desc: cert.issuer,
+  url: cert.image,
+}))
 
 export default function CertificationsSection() {
   const sectionRef = useRef(null)
@@ -51,20 +57,7 @@ export default function CertificationsSection() {
       </div>
 
       <div className={styles.galleryArea}>
-        <DraggableContainer variant="masonry">
-          <GridBody>
-            {CERTS.map((cert) => (
-              <GridItem key={cert.id} className={styles.certTile}>
-                <img
-                  src={cert.image}
-                  alt={`${cert.title} certificate from ${cert.issuer}`}
-                  className={styles.certImg}
-                  draggable={false}
-                />
-              </GridItem>
-            ))}
-          </GridBody>
-        </DraggableContainer>
+        <BentoGallery items={GALLERY_ITEMS} />
       </div>
 
     </section>
