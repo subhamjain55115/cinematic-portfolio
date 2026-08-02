@@ -6,12 +6,24 @@ import profile from '@/data/profile.json'
 import BentoGallery from '@/components/ui/bento-gallery'
 import styles from '@/styles/sections/CertificationsSection.module.css'
 
+// Repeating bento pattern - one big feature tile, two stacked tiles, one
+// tall tile, one short tile, one wide tile, then it cycles.
+const SPAN_PATTERN = [
+  'md:col-span-2 md:row-span-2',
+  'md:row-span-1',
+  'md:row-span-1',
+  'md:row-span-2',
+  'md:row-span-1',
+  'md:col-span-2 md:row-span-1',
+]
+
 const CERTS = profile.certifications
-const GALLERY_ITEMS = CERTS.map((cert) => ({
+const GALLERY_ITEMS = CERTS.map((cert, i) => ({
   id: cert.id,
   title: cert.title,
   desc: cert.issuer,
   url: cert.image,
+  span: SPAN_PATTERN[i % SPAN_PATTERN.length],
 }))
 
 export default function CertificationsSection() {

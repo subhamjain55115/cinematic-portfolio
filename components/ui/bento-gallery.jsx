@@ -1,7 +1,7 @@
 'use client'
 
 import { useRef, useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'motion/react'
+import { motion, AnimatePresence, useMotionValue } from 'motion/react'
 import { FiX } from 'react-icons/fi'
 import { cn } from '@/lib/utils'
 
@@ -18,10 +18,12 @@ import { cn } from '@/lib/utils'
 //   embedded inside an always-dark section.
 // - Dropped the built-in title/description header and scroll-fade -
 //   the parent section already renders its own header.
-// - Unlike the original demo, this uses horizontal drag only (no wheel
-//   listener), so vertical wheel/touch scroll passes straight through
-//   to page.js's global section-snap navigation instead of being
-//   captured by the gallery.
+// - Pans on mouse/touch drag AND horizontal wheel/trackpad input, but
+//   only when the gesture is horizontal (deltaX-dominant, or Shift+wheel).
+//   A plain vertical wheel/touch scroll is left completely alone so it
+//   still bubbles to page.js's global section-snap navigation - an
+//   earlier version intercepted all wheel input and trapped the page
+//   inside this section.
 
 const containerVariants = {
   hidden: {},
@@ -80,6 +82,7 @@ export default function BentoGallery({ items }) {
   const [dragConstraint, setDragConstraint] = useState(0)
   const containerRef = useRef(null)
   const gridRef = useRef(null)
+  const x = useMotionValue(0)
 
   useEffect(() => {
     const calculateConstraints = () => {
@@ -96,6 +99,25 @@ export default function BentoGallery({ items }) {
     return () => window.removeEventListener('resize', calculateConstraints)
   }, [items])
 
+  useEffect(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    function handleWheel(event) {
+      const horizontalIntent = Math.abs(event.deltaX) > Math.abs(event.deltaY)
+      if (!horizontalIntent && !event.shiftKey) return // vertical scroll - let it bubble to the page
+
+      event.preventDefault()
+      event.stopPropagation()
+      const delta = horizontalIntent ? event.deltaX : event.deltaY
+      const next = Math.min(0, Math.max(dragConstraint, x.get() - delta))
+      x.set(next)
+    }
+
+    container.addEventListener('wheel', handleWheel, { passive: false })
+    return () => container.removeEventListener('wheel', handleWheel)
+  }, [dragConstraint, x])
+
   return (
     <div className="relative h-full w-full overflow-hidden">
       <div
@@ -105,12 +127,13 @@ export default function BentoGallery({ items }) {
         <motion.div
           className="w-max"
           drag="x"
+          style={{ x }}
           dragConstraints={{ left: dragConstraint, right: 0 }}
           dragElastic={0.05}
         >
           <motion.div
             ref={gridRef}
-            className="grid h-full auto-cols-[minmax(14rem,1fr)] grid-flow-col gap-4 px-4 md:px-8"
+            className="grid h-full auto-cols-[minmax(13rem,1fr)] auto-rows-fr grid-flow-col gap-4 px-4 md:px-8"
             variants={containerVariants}
             initial="hidden"
             whileInView="visible"
@@ -121,7 +144,8 @@ export default function BentoGallery({ items }) {
                 key={item.id}
                 variants={itemVariants}
                 className={cn(
-                  'group relative flex h-full min-h-[13rem] w-full min-w-[13rem] cursor-pointer items-end overflow-hidden rounded-xl border border-white/10 bg-[#111] p-4 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[var(--accent)] focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]',
+                  'group relative flex h-full w-full min-w-48 cursor-pointer items-end overflow-hidden rounded-xl border border-white/10 bg-[#111] p-4 shadow-sm transition-shadow duration-300 ease-in-out hover:shadow-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-(--accent) focus-visible:ring-offset-2 focus-visible:ring-offset-[#080808]',
+                  item.span,
                 )}
                 whileHover={{ scale: 1.02 }}
                 transition={{ type: 'spring', stiffness: 300, damping: 20 }}
