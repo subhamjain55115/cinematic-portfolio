@@ -17,7 +17,10 @@ const SPAN_PATTERN = [
   'md:col-span-2 md:row-span-1',
 ]
 
-const CERTS = profile.certifications
+// Most recent first
+const CERTS = [...profile.certifications].sort(
+  (a, b) => new Date(b.date) - new Date(a.date),
+)
 const GALLERY_ITEMS = CERTS.map((cert, i) => ({
   id: cert.id,
   title: cert.title,

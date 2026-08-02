@@ -122,10 +122,10 @@ export default function BentoGallery({ items }) {
     <div className="relative h-full w-full overflow-hidden">
       <div
         ref={containerRef}
-        className="relative flex h-full w-full cursor-grab items-center active:cursor-grabbing"
+        className="relative flex h-full w-full cursor-grab active:cursor-grabbing"
       >
         <motion.div
-          className="w-max"
+          className="h-full w-max"
           drag="x"
           style={{ x }}
           dragConstraints={{ left: dragConstraint, right: 0 }}
