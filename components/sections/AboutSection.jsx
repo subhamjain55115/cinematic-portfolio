@@ -5,10 +5,8 @@ import Image from 'next/image'
 import { gsap } from '@/lib/gsap'
 import { FaGithub, FaLinkedinIn, FaInstagram, FaFacebookF, FaThreads, FaWhatsapp } from 'react-icons/fa6'
 import profile from '@/data/profile.json'
+import { usePortfolio } from '@/context/PortfolioContext'
 import styles from '@/styles/sections/AboutSection.module.css'
-
-const BIO      = profile.bio
-const WHO_ITEMS = profile.skills
 
 const ICON_MAP = {
   GitHub: FaGithub,
@@ -22,6 +20,7 @@ const ICON_MAP = {
 const SOCIALS = profile.socials.map(s => ({ Icon: ICON_MAP[s.label], href: s.href, label: s.label }))
 
 export default function AboutSection() {
+  const { about } = usePortfolio()
   const sectionRef  = useRef(null)
   const photoRef    = useRef(null)
   const contentRef  = useRef(null)
@@ -30,6 +29,11 @@ export default function AboutSection() {
 
   const [typed, setTyped] = useState(0)
   const [done,  setDone]  = useState(false)
+
+  const bioText = about?.bio || profile.bio
+  const whoItems = about?.skills?.length ? about.skills : profile.skills
+  const photoSrc = about?.image || '/assets/subham-about.png'
+  const signatureText = about?.signature || profile.name.first
 
   useEffect(() => {
     const section = sectionRef.current
@@ -62,9 +66,9 @@ export default function AboutSection() {
 
       let i = 0
       intervalRef.current = setInterval(() => {
-        i = Math.min(i + 6, BIO.length)
+        i = Math.min(i + 6, bioText.length)
         setTyped(i)
-        if (i >= BIO.length) {
+        if (i >= bioText.length) {
           clearInterval(intervalRef.current)
           setDone(true)
         }
@@ -84,7 +88,7 @@ export default function AboutSection() {
       clearInterval(intervalRef.current)
       scroller.removeEventListener('scroll', onScroll)
     }
-  }, [])
+  }, [bioText])
 
   return (
     <section ref={sectionRef} className={styles.section}>
@@ -94,15 +98,16 @@ export default function AboutSection() {
         <div className={styles.photoWrap}>
           <div className={styles.photoFrame} data-about-photo>
             <Image
-              src="/assets/subham-about.png"
-              alt={profile.name.full}
+              src={photoSrc}
+              alt={signatureText}
               fill
               quality={100}
               sizes="(min-width: 768px) 30vw, 100vw"
               className={styles.photoImg}
+              unoptimized={photoSrc.startsWith('http') || photoSrc.startsWith('data:')}
             />
           </div>
-          <p className={styles.signature}>{profile.name.first}</p>
+          <p className={styles.signature}>{signatureText}</p>
         </div>
 
         {/* Social icons */}
@@ -129,7 +134,7 @@ export default function AboutSection() {
         <p className={styles.whoLabel}>Who I Am</p>
         <div className={styles.marqueeWrap}>
           <div className={styles.marqueeTrack}>
-            {[...WHO_ITEMS, ...WHO_ITEMS].map((item, i) => (
+            {[...whoItems, ...whoItems].map((item, i) => (
               <span key={i} className={styles.marqueeItem}>
                 {item}
                 <span className={styles.marqueeDot}>·</span>
@@ -141,7 +146,7 @@ export default function AboutSection() {
         {/* Bio text - typewriter: all chars always in DOM, only color changes */}
         <div className={styles.bioWrap}>
           <p className={styles.bio}>
-            {BIO.split('').map((char, i) => (
+            {bioText.split('').map((char, i) => (
               <span
                 key={i}
                 className={

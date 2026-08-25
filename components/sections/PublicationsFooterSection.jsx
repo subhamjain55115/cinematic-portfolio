@@ -128,13 +128,13 @@ export default function PublicationsFooterSection() {
     let renderer, vidUni, rafId, videoPlaying = false
     let onMouseMove = () => {}, onResize = () => {}, onLoaderDismissed = () => {}
 
-    if (!isMobile && canvas && videoEl) {
-      // ── Three.js video setup ────────────────────────────────
-      const W = sticky.offsetWidth
-      const H = sticky.offsetHeight
+    if (canvas && videoEl) {
+      // ── Three.js video setup (supports both Mobile & Desktop) ──
+      const W = sticky.offsetWidth || window.innerWidth
+      const H = sticky.offsetHeight || window.innerHeight
 
-      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false })
-      renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
+      renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: false, powerPreference: 'high-performance' })
+      renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2))
       renderer.setSize(W, H)
       renderer.setClearColor(0x000000, 0)
 
@@ -142,18 +142,31 @@ export default function PublicationsFooterSection() {
       const camera = new THREE.OrthographicCamera(-W / 2, W / 2, H / 2, -H / 2, 0.1, 100)
       camera.position.z = 10
 
-      videoEl.src       = '/assets/footer-video.mp4'
-      videoEl.muted     = true
+      videoEl.src         = '/assets/footer-video.mp4'
+      videoEl.muted       = true
       videoEl.playsInline = true
-      videoEl.loop      = true
-      videoEl.preload   = 'auto'
+      videoEl.setAttribute('playsinline', 'true')
+      videoEl.setAttribute('webkit-playsinline', 'true')
+      videoEl.loop        = true
+      videoEl.preload     = 'auto'
 
       // Unmute once the intro loader's Start button has fired a user
-      // gesture - same pattern VideoIntro uses, required for autoplay-with-sound.
+      // gesture - desktop only for sound, mobile stays muted for clean autoplay
       onLoaderDismissed = function() {
-        videoEl.muted = false
+        if (window.innerWidth >= 768) {
+          videoEl.muted = false
+        }
       }
       window.addEventListener('loader-dismissed', onLoaderDismissed)
+
+      // Handle mobile interaction touch unlock
+      const unlockMobileVideo = () => {
+        if (videoEl && videoEl.paused && vidUni && vidUni.uOpacity.value > 0.04) {
+          videoEl.play().catch(() => {})
+        }
+      }
+      window.addEventListener('touchstart', unlockMobileVideo, { passive: true })
+      window.addEventListener('click', unlockMobileVideo, { passive: true })
 
       const vidTex = new THREE.VideoTexture(videoEl)
       vidTex.minFilter = THREE.LinearFilter
@@ -188,13 +201,15 @@ export default function PublicationsFooterSection() {
       sticky.addEventListener('mousemove', onMouseMove)
 
       onResize = function() {
-        const w = sticky.offsetWidth
-        const h = sticky.offsetHeight
-        renderer.setSize(w, h)
-        camera.left   = -w / 2; camera.right  = w / 2
-        camera.top    =  h / 2; camera.bottom = -h / 2
-        camera.updateProjectionMatrix()
-        vidUni.uCanvasAspect.value = w / h
+        const w = sticky.offsetWidth || window.innerWidth
+        const h = sticky.offsetHeight || window.innerHeight
+        if (renderer && camera && vidUni) {
+          renderer.setSize(w, h)
+          camera.left   = -w / 2; camera.right  = w / 2
+          camera.top    =  h / 2; camera.bottom = -h / 2
+          camera.updateProjectionMatrix()
+          vidUni.uCanvasAspect.value = w / h
+        }
       }
       window.addEventListener('resize', onResize)
 
@@ -268,9 +283,25 @@ export default function PublicationsFooterSection() {
 
       if (isMobile) {
         // Static mobile background - interstitial fades between feature list and footer
-        const interIn  = Math.max(0, Math.min(1, (p - 0.28) / 0.17))
-        const interOut = Math.max(0, Math.min(1, (p - 0.60) / 0.12))
+        const interIn  = Math.max(0, Math.min(1, (p - 0.25) / 0.16))
+        const interOut = Math.max(0, Math.min(1, (p - 0.56) / 0.13))
         gsap.set(interstitialRef.current, { opacity: interIn * (1 - interOut), pointerEvents: 'none' })
+
+        // Mobile video crossfade in (p 0.58 → 0.90)
+        const xfadeRaw = Math.max(0, Math.min(1, (p - 0.58) / 0.32))
+        const xfade    = 0.5 - 0.5 * Math.cos(Math.PI * xfadeRaw)
+        if (vidUni) {
+          vidUni.uOpacity.value = xfade
+        }
+
+        if (xfade > 0.04 && !videoPlaying) {
+          videoPlaying = true
+          videoEl.play().catch(() => {})
+        } else if (xfade <= 0.04 && videoPlaying) {
+          videoPlaying = false
+          videoEl.pause()
+          videoEl.currentTime = 0
+        }
 
       } else {
         // ── Phase 2: image shrinks full-width → centered (p 0.12 → 0.65) ──
@@ -298,7 +329,9 @@ export default function PublicationsFooterSection() {
         const xfade    = 0.5 - 0.5 * Math.cos(Math.PI * xfadeRaw)
 
         gsap.set(imageWrapRef.current, { width: w, x: centerX, opacity: 1 - xfade })
-        vidUni.uOpacity.value = xfade
+        if (vidUni) {
+          vidUni.uOpacity.value = xfade
+        }
 
         if (xfade > 0.04 && !videoPlaying) {
           videoPlaying = true

@@ -2,20 +2,20 @@
 
 import { useState } from 'react'
 import profile from '@/data/profile.json'
+import { usePortfolio } from '@/context/PortfolioContext'
 import MarqueeColumn from '@/components/ui/marquee-column'
 import CertificateModal from '@/components/ui/certificate-modal'
 import styles from '@/styles/sections/CertificationsSection.module.css'
 
-// Most recent first
-const CERTS = [...profile.certifications].sort(
-  (a, b) => new Date(b.date) - new Date(a.date),
-)
-
-// Split alternately so both columns carry a similar mix of recent/older certs
-const COLUMN_A = CERTS.filter((_, i) => i % 2 === 0)
-const COLUMN_B = CERTS.filter((_, i) => i % 2 === 1)
-
 export default function CertificationsSection() {
+  const { certifications: contextCerts } = usePortfolio()
+  const certs = (contextCerts?.length ? contextCerts : profile.certifications).slice().sort(
+    (a, b) => new Date(b.date || '2020-01-01') - new Date(a.date || '2020-01-01')
+  )
+
+  // Split alternately so both columns carry a similar mix of recent/older certs
+  const columnA = certs.filter((_, i) => i % 2 === 0)
+  const columnB = certs.filter((_, i) => i % 2 === 1)
   const [selected, setSelected] = useState(null)
 
   return (
@@ -23,7 +23,7 @@ export default function CertificationsSection() {
 
       <div className={styles.contentGrid}>
 
-        <MarqueeColumn items={COLUMN_A} direction="down" duration={46} onSelect={setSelected} />
+        <MarqueeColumn items={columnA.length ? columnA : certs} direction="down" duration={46} onSelect={setSelected} />
 
         <div className={styles.centerPanel}>
           <div className={styles.panelPhotoGlow}>
@@ -43,12 +43,12 @@ export default function CertificationsSection() {
           </p>
 
           <div className={styles.panelStat}>
-            <span className={styles.panelStatValue}>{CERTS.length}</span>
+            <span className={styles.panelStatValue}>{certs.length}</span>
             <span className={styles.panelStatLabel}>Credentials</span>
           </div>
         </div>
 
-        <MarqueeColumn items={COLUMN_B} direction="up" duration={38} onSelect={setSelected} />
+        <MarqueeColumn items={columnB.length ? columnB : certs} direction="up" duration={38} onSelect={setSelected} />
 
       </div>
 

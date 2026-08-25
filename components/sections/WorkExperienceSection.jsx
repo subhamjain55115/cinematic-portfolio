@@ -4,11 +4,13 @@ import { useEffect, useRef } from 'react'
 import Image from 'next/image'
 import { gsap } from '@/lib/gsap'
 import profile from '@/data/profile.json'
+import { usePortfolio } from '@/context/PortfolioContext'
 import styles from '@/styles/sections/WorkExperienceSection.module.css'
 
-const EXPS = profile.experience
-
 export default function WorkExperienceSection() {
+  const { experience: contextExp } = usePortfolio()
+  const experiences = contextExp?.length ? contextExp : profile.experience
+
   const sectionRef        = useRef(null)
   const lineRef           = useRef(null)
   const dotRefs           = useRef([])
@@ -26,7 +28,7 @@ export default function WorkExperienceSection() {
       })
     })
     return () => cancelAnimationFrame(id)
-  }, [])
+  }, [experiences])
 
   function handleCardEnter(i) {
     if (typeof window !== 'undefined' && window.innerWidth < 768) return
@@ -73,14 +75,19 @@ export default function WorkExperienceSection() {
 
     function playAnim() {
       resetAnim()
-      const n  = EXPS.length
+      const n  = experiences.length
+      if (n === 0) return
       const tl = gsap.timeline()
       tlRef.current = tl
       tl.to(lineRef.current, { scaleX: 1, duration: 1.6, ease: 'power2.inOut' }, 0)
-      EXPS.forEach((_, i) => {
-        const t = i === 0 ? 0.08 : 0.08 + (i / (n - 1)) * 1.44
-        tl.to(dotRefs.current[i],  { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, t)
-        tl.to(cardRefs.current[i], { opacity: 1, y: 0,    duration: 0.6, ease: 'power3.out'  }, t + 0.14)
+      experiences.forEach((_, i) => {
+        const t = i === 0 ? 0.08 : 0.08 + (i / Math.max(n - 1, 1)) * 1.44
+        if (dotRefs.current[i]) {
+          tl.to(dotRefs.current[i],  { scale: 1, opacity: 1, duration: 0.4, ease: 'back.out(2)' }, t)
+        }
+        if (cardRefs.current[i]) {
+          tl.to(cardRefs.current[i], { opacity: 1, y: 0,    duration: 0.6, ease: 'power3.out'  }, t + 0.14)
+        }
       })
     }
 
@@ -94,7 +101,7 @@ export default function WorkExperienceSection() {
 
     scroller.addEventListener('scroll', onScroll, { passive: true })
     return () => scroller.removeEventListener('scroll', onScroll)
-  }, [])
+  }, [experiences])
 
   return (
     <section ref={sectionRef} className={styles.section}>
@@ -112,7 +119,7 @@ export default function WorkExperienceSection() {
 
       <div className={styles.header}>
         <span className={styles.label}>Work Experience</span>
-        <span className={styles.labelRight}>0{EXPS.length} Companies</span>
+        <span className={styles.labelRight}>0{experiences.length} Companies</span>
       </div>
 
       <div className={styles.timeline}>
@@ -123,9 +130,9 @@ export default function WorkExperienceSection() {
 
           {/* Entry columns */}
           <div className={styles.entries}>
-            {EXPS.map((exp, i) => (
+            {experiences.map((exp, i) => (
               <div
-                key={exp.id}
+                key={exp.id || i}
                 className={styles.entry}
                 onMouseEnter={() => handleCardEnter(i)}
                 onMouseLeave={() => handleCardLeave(i)}
@@ -135,7 +142,7 @@ export default function WorkExperienceSection() {
                   ref={el => { dotRefs.current[i] = el }}
                   className={styles.dot}
                 >
-                  <span className={styles.dotNum}>0{i + 1}</span>
+                  <span className={styles.dotNum}>{exp.order ? (exp.order < 10 ? `0${exp.order}` : exp.order) : (i < 9 ? `0${i + 1}` : i + 1)}</span>
                 </div>
 
                 <div
@@ -144,24 +151,29 @@ export default function WorkExperienceSection() {
                 >
                   <div className={styles.cardHead}>
                     <span className={styles.period}>{exp.period} - {exp.periodEnd}</span>
-                    <span className={styles.typeTag}>{exp.type}</span>
+                    <span className={styles.typeTag}>{exp.type || 'Full-time'}</span>
                     {exp.location && <span className={styles.location}>{exp.location}</span>}
                   </div>
                   <h2 className={styles.company}>{exp.company}</h2>
                   <p  className={styles.role}>{exp.role}</p>
-                  <ul
-                    ref={el => { bulletListRefs.current[i] = el }}
-                    className={styles.bullets}
-                  >
-                    {exp.bullets.map((b, bi) => (
-                      <li key={bi} className={styles.bullet}>{b}</li>
-                    ))}
-                  </ul>
-                  <div className={styles.stack}>
-                    {exp.tech.map(t => (
-                      <span key={t} className={styles.tag}>{t}</span>
-                    ))}
-                  </div>
+                  {exp.desc && <p className="text-xs text-orange-200/80 mb-2">{exp.desc}</p>}
+                  {exp.bullets && exp.bullets.length > 0 && (
+                    <ul
+                      ref={el => { bulletListRefs.current[i] = el }}
+                      className={styles.bullets}
+                    >
+                      {exp.bullets.map((b, bi) => (
+                        <li key={bi} className={styles.bullet}>{b}</li>
+                      ))}
+                    </ul>
+                  )}
+                  {exp.tech && exp.tech.length > 0 && (
+                    <div className={styles.stack}>
+                      {exp.tech.map(t => (
+                        <span key={t} className={styles.tag}>{t}</span>
+                      ))}
+                    </div>
+                  )}
                 </div>
 
               </div>

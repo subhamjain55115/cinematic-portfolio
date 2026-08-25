@@ -4,11 +4,13 @@ import { useEffect, useRef, useState } from 'react'
 import Image from 'next/image'
 import { gsap, ScrollTrigger } from '@/lib/gsap'
 import profile from '@/data/profile.json'
+import { usePortfolio } from '@/context/PortfolioContext'
 import styles from '@/styles/sections/ProjectsSection.module.css'
 
-const PROJECTS = profile.projects
-
 export default function ProjectsSection() {
+  const { projects: contextProjects } = usePortfolio()
+  const projects = contextProjects?.length ? contextProjects : profile.projects
+
   const sectionRef  = useRef(null)
   const trackRef    = useRef(null)
   const contentRefs = useRef([])
@@ -24,7 +26,9 @@ export default function ProjectsSection() {
 
     const scroller = document.querySelector('main')
     if (!scroller) return
-    const n = PROJECTS.length
+    const n = projects.length
+    if (n === 0) return
+
     contentRefs.current = contentRefs.current.slice(0, n)
     bgRefs.current      = bgRefs.current.slice(0, n)
 
@@ -39,7 +43,7 @@ export default function ProjectsSection() {
     tl.to(track, {
       xPercent: -((n - 1) / n * 100),
       ease: 'none',
-      duration: n - 1,
+      duration: Math.max(n - 1, 1),
     }, 0)
 
     for (let i = 0; i < n - 1; i++) {
@@ -87,7 +91,7 @@ export default function ProjectsSection() {
       trigger:  section,
       scroller,
       start:    'top top',
-      end:      () => `+=${(n - 1) * window.innerHeight}`,
+      end:      () => `+=${Math.max(n - 1, 1) * window.innerHeight}`,
       onUpdate: (self) => {
         tl.progress(self.progress)
 
@@ -105,10 +109,10 @@ export default function ProjectsSection() {
     })
 
     return () => st.kill()
-  }, [])
+  }, [projects])
 
   return (
-    <div style={{ height: `${PROJECTS.length * 100}vh` }}>
+    <div style={{ height: `${Math.max(projects.length, 1) * 100}vh` }}>
       <section ref={sectionRef} className={styles.section}>
 
         {/* Top bar */}
@@ -117,7 +121,7 @@ export default function ProjectsSection() {
           <div className={styles.counter}>
             <span ref={counterRef} className={styles.cCur}>01</span>
             <span className={styles.cSep}> / </span>
-            <span className={styles.cTot}>0{PROJECTS.length}</span>
+            <span className={styles.cTot}>0{projects.length}</span>
           </div>
         </div>
 
@@ -125,9 +129,9 @@ export default function ProjectsSection() {
         <div
           ref={trackRef}
           className={styles.track}
-          style={{ width: `${PROJECTS.length * 100}vw` }}
+          style={{ width: `${Math.max(projects.length, 1) * 100}vw` }}
         >
-          {PROJECTS.map((proj, i) => (
+          {projects.map((proj, i) => (
             <div key={proj.id} className={styles.slide}>
 
               <div
@@ -135,13 +139,14 @@ export default function ProjectsSection() {
                 className={styles.slideBg}
               >
                 <Image
-                  src={proj.image}
+                  src={proj.image || '/assets/projects/crypto-tracker.png'}
                   alt={proj.title}
                   fill
                   quality={100}
                   sizes="100vw"
                   className={styles.slideImg}
                   priority={i === 0}
+                  unoptimized={proj.image?.startsWith('http') || proj.image?.startsWith('data:')}
                 />
                 <div className={styles.slideOverlayLeft}   aria-hidden />
                 <div className={styles.slideOverlayBottom} aria-hidden />
@@ -156,27 +161,29 @@ export default function ProjectsSection() {
               >
                 <div className={styles.slideLeft}>
                   <div className={styles.meta}>
-                    <span className={styles.typeTag}>{proj.type}</span>
+                    <span className={styles.typeTag}>{proj.type || 'Web App'}</span>
                   </div>
                   <h2 className={styles.title}>{proj.title}</h2>
                   <p  className={styles.subtitle}>{proj.subtitle}</p>
-                  <a
-                    href={proj.link}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className={styles.liveBtn}
-                  >
-                    <span>Live Demo</span>
-                    <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
-                      <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </a>
+                  {proj.link && (
+                    <a
+                      href={proj.link}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className={styles.liveBtn}
+                    >
+                      <span>Live Demo</span>
+                      <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden>
+                        <path d="M2 10L10 2M10 2H4M10 2V8" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round"/>
+                      </svg>
+                    </a>
+                  )}
                 </div>
 
                 <div className={styles.slideRight}>
                   <p className={styles.desc}>{proj.desc}</p>
                   <div className={styles.stack}>
-                    {proj.tech.map(t => (
+                    {proj.tech?.map(t => (
                       <span key={t} className={styles.tag}>{t}</span>
                     ))}
                   </div>

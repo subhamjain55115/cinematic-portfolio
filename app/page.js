@@ -7,18 +7,19 @@ import VideoIntro            from '@/components/sections/VideoIntro'
 import HeroSection           from '@/components/sections/HeroSection'
 import AboutSection          from '@/components/sections/AboutSection'
 import ProjectsSection       from '@/components/sections/ProjectsSection'
+import ServicesSection       from '@/components/sections/ServicesSection'
 import WorkExperienceSection from '@/components/sections/WorkExperienceSection'
 import CertificationsSection from '@/components/sections/CertificationsSection'
 import PublicationsFooterSection from '@/components/sections/PublicationsFooterSection'
 import ScreenLoader from '@/components/sections/ScreenLoader'
 import profile               from '@/data/profile.json'
-
-// Snap: 0=video 1=hero 2=about 3..(2+n)=projects (n=profile.projects.length)
-// (3+n)=work-exp (4+n)=certifications (5+n)=publications (6+n)=footer
-const PROJECT_SLIDES = profile.projects.length
-const TOTAL          = 8 + PROJECT_SLIDES
+import { usePortfolio }       from '@/context/PortfolioContext'
 
 export default function Home() {
+  const { projects }   = usePortfolio()
+  const projectCount   = projects?.length || profile.projects.length
+  const totalSlides    = 9 + projectCount
+
   const mainRef        = useRef(null)
   const idxRef         = useRef(0)
   const busyRef        = useRef(false)
@@ -29,6 +30,8 @@ export default function Home() {
   useEffect(() => {
     const el = mainRef.current
     if (!el) return
+
+    const total = 9 + (projects?.length || profile.projects.length)
 
     // Fade to black → instant scrollTop jump → fade in
     // Used whenever we loop footer → first section
@@ -57,20 +60,20 @@ export default function Home() {
 
     function goTo(idx) {
       // Wrap-around
-      if (idx >= TOTAL) idx = 0
-      if (idx < 0)      idx = TOTAL - 1
+      if (idx >= total) idx = 0
+      if (idx < 0)      idx = total - 1
 
       if (idx === idxRef.current || busyRef.current) return
 
       // Footer → top: fade-cut instead of scrolling back through all sections
-      if (idxRef.current === TOTAL - 1 && idx === 0) {
+      if (idxRef.current === total - 1 && idx === 0) {
         fadeLoop(0, 0)
         return
       }
 
       // Top → footer: fade-cut instead of scrolling forward through all sections
-      if (idxRef.current === 0 && idx === TOTAL - 1) {
-        fadeLoop((TOTAL - 1) * window.innerHeight, TOTAL - 1)
+      if (idxRef.current === 0 && idx === total - 1) {
+        fadeLoop((total - 1) * window.innerHeight, total - 1)
         return
       }
 
@@ -122,7 +125,7 @@ export default function Home() {
       const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8
       const atTop    = el.scrollTop < 8
       if (dy > 0 && atBottom) fadeLoop(0, 0)
-      if (dy < 0 && atTop)    fadeLoop(el.scrollHeight - el.clientHeight, TOTAL - 1)
+      if (dy < 0 && atTop)    fadeLoop(el.scrollHeight - el.clientHeight, total - 1)
     }
 
     if (!isMobile) {
@@ -147,7 +150,7 @@ export default function Home() {
       window.removeEventListener('footer-loop-back', onFooterLoop)
       tweenRef.current?.kill()
     }
-  }, [])
+  }, [projects])
 
   return (
     <>
@@ -175,6 +178,7 @@ export default function Home() {
           <HeroSection />
           <AboutSection />
           <ProjectsSection />
+          <ServicesSection />
           <WorkExperienceSection />
           <CertificationsSection />
           <PublicationsFooterSection />

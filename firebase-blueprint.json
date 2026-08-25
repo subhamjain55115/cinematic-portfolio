@@ -1,0 +1,278 @@
+{
+  "entities": {
+    "AboutData": {
+      "title": "About Data",
+      "description": "About section profile content, bio, and skills",
+      "type": "object",
+      "properties": {
+        "bio": {
+          "type": "string",
+          "description": "Full biography text"
+        },
+        "image": {
+          "type": "string",
+          "description": "Profile image URL or asset path"
+        },
+        "signature": {
+          "type": "string",
+          "description": "Signature text or first name"
+        },
+        "skills": {
+          "type": "array",
+          "description": "List of skill tags for Who I Am marquee"
+        },
+        "updatedAt": {
+          "type": "string",
+          "description": "ISO timestamp of last update"
+        }
+      },
+      "required": ["bio", "image"]
+    },
+    "Project": {
+      "title": "Project",
+      "description": "Featured work project showcase",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the project"
+        },
+        "title": {
+          "type": "string",
+          "description": "Project title"
+        },
+        "subtitle": {
+          "type": "string",
+          "description": "Project subtitle or tagline"
+        },
+        "type": {
+          "type": "string",
+          "description": "Category or type of project (e.g. Web App, Clone Project)"
+        },
+        "link": {
+          "type": "string",
+          "description": "Live demo URL or repository link"
+        },
+        "image": {
+          "type": "string",
+          "description": "Thumbnail image URL or asset path"
+        },
+        "tech": {
+          "type": "array",
+          "description": "List of technologies used"
+        },
+        "desc": {
+          "type": "string",
+          "description": "Project description"
+        },
+        "order": {
+          "type": "number",
+          "description": "Display order index"
+        }
+      },
+      "required": ["title", "link", "image", "order"]
+    },
+    "Experience": {
+      "title": "Experience",
+      "description": "Work experience history and roles",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the experience record"
+        },
+        "order": {
+          "type": "number",
+          "description": "Sequence numbering (1, 2, 3...)"
+        },
+        "company": {
+          "type": "string",
+          "description": "Full company name"
+        },
+        "companyShort": {
+          "type": "string",
+          "description": "Short company name or acronym"
+        },
+        "role": {
+          "type": "string",
+          "description": "Job title or role"
+        },
+        "period": {
+          "type": "string",
+          "description": "Start date period (e.g. Jun 2024)"
+        },
+        "periodEnd": {
+          "type": "string",
+          "description": "End date period or Present"
+        },
+        "location": {
+          "type": "string",
+          "description": "Job location or Remote"
+        },
+        "type": {
+          "type": "string",
+          "description": "Employment type (e.g. Full-time, Internship)"
+        },
+        "desc": {
+          "type": "string",
+          "description": "Role summary description"
+        },
+        "bullets": {
+          "type": "array",
+          "description": "List of key achievement bullet points"
+        },
+        "tech": {
+          "type": "array",
+          "description": "Technologies and tools used"
+        }
+      },
+      "required": ["company", "role", "period", "periodEnd", "order"]
+    },
+    "Certification": {
+      "title": "Certification",
+      "description": "Accreditation or course certificate",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for certification"
+        },
+        "title": {
+          "type": "string",
+          "description": "Name or title of certificate"
+        },
+        "issuer": {
+          "type": "string",
+          "description": "Issuing organization or institution"
+        },
+        "year": {
+          "type": "string",
+          "description": "Year of issuance"
+        },
+        "date": {
+          "type": "string",
+          "description": "Date of issuance (YYYY-MM-DD)"
+        },
+        "image": {
+          "type": "string",
+          "description": "Certificate image URL or asset path"
+        },
+        "order": {
+          "type": "number",
+          "description": "Display order index"
+        }
+      },
+      "required": ["title", "image"]
+    },
+    "Service": {
+      "title": "Service",
+      "description": "Service offering and capability",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the service"
+        },
+        "title": {
+          "type": "string",
+          "description": "Title of the service"
+        },
+        "icon": {
+          "type": "string",
+          "description": "Icon identifier (Globe, Layers, Smartphone, Bot, Palette, Cpu, Code)"
+        },
+        "category": {
+          "type": "string",
+          "description": "Service category or practice area"
+        },
+        "shortDesc": {
+          "type": "string",
+          "description": "Concise summary description"
+        },
+        "features": {
+          "type": "array",
+          "description": "List of key deliverables and capability highlights"
+        },
+        "tech": {
+          "type": "array",
+          "description": "Technology stack tags"
+        },
+        "order": {
+          "type": "number",
+          "description": "Display order index"
+        }
+      },
+      "required": ["title", "shortDesc", "order"]
+    },
+    "Template": {
+      "title": "Template Project",
+      "description": "Pre-built deployed template project with live URL and hero section",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "description": "Unique identifier for the template project"
+        },
+        "title": {
+          "type": "string",
+          "description": "Template project title"
+        },
+        "siteName": {
+          "type": "string",
+          "description": "Live website / brand name"
+        },
+        "category": {
+          "type": "string",
+          "description": "Industry category (e.g. Fashion, Finance, Automotive, E-Commerce, EdTech)"
+        },
+        "link": {
+          "type": "string",
+          "description": "Live deployment URL"
+        },
+        "image": {
+          "type": "string",
+          "description": "Hero section screenshot or preview image URL"
+        },
+        "desc": {
+          "type": "string",
+          "description": "Detailed description of the template architecture"
+        },
+        "tech": {
+          "type": "array",
+          "description": "List of technologies utilized"
+        },
+        "order": {
+          "type": "number",
+          "description": "Display order index"
+        }
+      },
+      "required": ["title", "siteName", "category", "link", "image", "order"]
+    }
+  },
+  "firestore": {
+    "/portfolio/about": {
+      "schema": { "$ref": "#/entities/AboutData" },
+      "description": "Singleton document storing about section details"
+    },
+    "/projects/{projectId}": {
+      "schema": { "$ref": "#/entities/Project" },
+      "description": "Collection of work projects"
+    },
+    "/experience/{experienceId}": {
+      "schema": { "$ref": "#/entities/Experience" },
+      "description": "Collection of work experience timeline items"
+    },
+    "/certifications/{certificationId}": {
+      "schema": { "$ref": "#/entities/Certification" },
+      "description": "Collection of certificates"
+    },
+    "/services/{serviceId}": {
+      "schema": { "$ref": "#/entities/Service" },
+      "description": "Collection of services and practice areas"
+    },
+    "/templates/{templateId}": {
+      "schema": { "$ref": "#/entities/Template" },
+      "description": "Collection of deployed template projects across industries"
+    }
+  }
+}

@@ -1,6 +1,7 @@
 'use client'
 
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import Link from 'next/link'
 import {
   NavigationMenu,
   NavigationMenuList,
@@ -9,22 +10,9 @@ import {
 } from '@/components/ui/navigation-menu'
 import { gsap } from '@/lib/gsap'
 import profile from '@/data/profile.json'
+import { usePortfolio } from '@/context/PortfolioContext'
 import styles from '@/styles/ui/Navbar.module.css'
 import { FaBars, FaTimes } from 'react-icons/fa'
-
-// idx matches snap position in page.js:
-// 0=video, 1=hero, 2=about, 3..(2+n)=projects (n=profile.projects.length),
-// (3+n)=work-exp, (4+n)=certifications, (5+n)=publications, (6+n)=footer
-const PROJECT_COUNT = profile.projects.length
-const NAV_ITEMS = [
-  { label: 'Home',           idx: 0 },
-  { label: 'About',          idx: 2 },
-  { label: 'Work',           idx: 3 },
-  { label: 'Experience',     idx: 3 + PROJECT_COUNT },
-  { label: 'Certifications', idx: 4 + PROJECT_COUNT },
-  { label: 'Impact',         idx: 5 + PROJECT_COUNT },
-  { label: 'Contact',        idx: 6 + PROJECT_COUNT },
-]
 
 function getIST() {
   return new Date().toLocaleTimeString('en-IN', {
@@ -36,8 +24,14 @@ function getIST() {
   }).toUpperCase()
 }
 
+function subscribeTime(callback) {
+  const id = setInterval(callback, 1000)
+  return () => clearInterval(id)
+}
+
 export default function Navbar() {
-  const [time,    setTime]    = useState('')   // '' on SSR - avoids hydration mismatch
+  const time = useSyncExternalStore(subscribeTime, getIST, () => '')
+  const { projects, isAdmin } = usePortfolio()
   const [onIntro, setOnIntro] = useState(true)
   const [onDark,  setOnDark]  = useState(false)
   const [menuOpen, setMenuOpen] = useState(false)
@@ -46,12 +40,17 @@ export default function Navbar() {
   const hidden      = useRef(false)
   const stopTimer   = useRef(null)
 
-  // Live clock - set immediately on mount, then every second
-  useEffect(() => {
-    setTime(getIST())
-    const id = setInterval(() => setTime(getIST()), 1000)
-    return () => clearInterval(id)
-  }, [])
+  const projectCount = projects?.length || 5
+  const navItems = [
+    { label: 'Home',           idx: 0 },
+    { label: 'About',          idx: 2 },
+    { label: 'Work',           idx: 3 },
+    { label: 'Services',       idx: 3 + projectCount },
+    { label: 'Experience',     idx: 4 + projectCount },
+    { label: 'Certifications', idx: 5 + projectCount },
+    { label: 'Impact',         idx: 6 + projectCount },
+    { label: 'Contact',        idx: 7 + projectCount },
+  ]
 
   // Auto-hide on scroll-down, reveal on scroll-up or scroll-stop
   useEffect(() => {
@@ -99,8 +98,8 @@ export default function Navbar() {
         <span className={styles.time}>INDIA TIME - {time}</span>
 
         <NavigationMenu className={styles.navMenu}>
-          <NavigationMenuList className="flex gap-6">
-            {NAV_ITEMS.map(({ label, idx }) => (
+          <NavigationMenuList className="flex gap-6 items-center">
+            {navItems.map(({ label, idx }) => (
               <NavigationMenuItem key={label}>
                 <NavigationMenuLink
                   className={styles.navLink}
@@ -121,12 +120,22 @@ export default function Navbar() {
           </NavigationMenuList>
         </NavigationMenu>
 
-        <a
-          href={`mailto:${profile.email}`}
-          className={`${styles.emailBtn} rounded-full text-xs font-semibold px-5 h-8`}
-        >
-          Email me
-        </a>
+        <div className="flex items-center gap-2">
+          <Link
+            href="/admin"
+            className="text-xs px-3 py-1.5 rounded-full border border-orange-400/40 text-orange-500 hover:bg-orange-500/10 transition-colors font-medium"
+            title="Admin Portal"
+          >
+            Admin
+          </Link>
+
+          <a
+            href={`mailto:${profile.email}`}
+            className={`${styles.emailBtn} rounded-full text-xs font-semibold px-5 h-8`}
+          >
+            Email me
+          </a>
+        </div>
 
         <button
           className={styles.hamburger}
@@ -139,7 +148,15 @@ export default function Navbar() {
 
       {menuOpen && (
         <div className={styles.mobileMenu}>
-          {NAV_ITEMS.map(({ label, idx }) => (
+          <button
+            className={styles.mobileCloseBtn}
+            onClick={() => setMenuOpen(false)}
+            aria-label="Close menu"
+          >
+            <FaTimes size={18} />
+          </button>
+
+          {navItems.map(({ label, idx }) => (
             <button
               key={label}
               className={styles.mobileNavLink}
@@ -156,6 +173,13 @@ export default function Navbar() {
               {label}
             </button>
           ))}
+          <Link
+            href="/admin"
+            className={styles.mobileAdminLink}
+            onClick={() => setMenuOpen(false)}
+          >
+            Admin Portal
+          </Link>
           <a
             href={`mailto:${profile.email}`}
             className={styles.mobileMailLink}

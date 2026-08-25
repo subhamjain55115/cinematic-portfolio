@@ -66,9 +66,23 @@ body {
   font-family: var(--font-geist-sans), Arial, sans-serif;
 }
 
-/* ─── Hide scrollbar ─────────────────────────────────────── */
+/* ─── Hide scrollbar for main portfolio, sleek scrollbar for admin ─── */
 main::-webkit-scrollbar { display: none; }
 main { scrollbar-width: none; -ms-overflow-style: none; }
+
+.admin-scroll-container::-webkit-scrollbar {
+  width: 8px;
+}
+.admin-scroll-container::-webkit-scrollbar-track {
+  background: #0d0d0f;
+}
+.admin-scroll-container::-webkit-scrollbar-thumb {
+  background: #27272f;
+  border-radius: 9999px;
+}
+.admin-scroll-container::-webkit-scrollbar-thumb:hover {
+  background: #f97316;
+}
 
 @media (max-width: 767px) {
   :root {

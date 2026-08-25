@@ -1,0 +1,71 @@
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+
+    function isSignedIn() {
+      return request.auth != null;
+    }
+
+    function isAdmin() {
+      return isSignedIn() && (
+        request.auth.token.email == 'shubham.rapariya2@gmail.com'
+      );
+    }
+
+    function isValidId(id) {
+      return id is string && id.size() <= 128 && id.matches('^[a-zA-Z0-9_\\-]+$');
+    }
+
+    // Default deny
+    match /{document=**} {
+      allow read, write: if false;
+    }
+
+    // Admin lookup document
+    match /admins/{adminId} {
+      allow read: if isSignedIn();
+      allow write: if false;
+    }
+
+    // Test connection
+    match /test/connection {
+      allow read: if true;
+    }
+
+    // About Document
+    match /portfolio/{docId} {
+      allow read: if true;
+      allow write: if isAdmin();
+    }
+
+    // Projects collection
+    match /projects/{projectId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(projectId);
+    }
+
+    // Experience collection
+    match /experience/{expId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(expId);
+    }
+
+    // Certifications collection
+    match /certifications/{certId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(certId);
+    }
+
+    // Services collection
+    match /services/{serviceId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(serviceId);
+    }
+
+    // Templates collection
+    match /templates/{templateId} {
+      allow read: if true;
+      allow create, update, delete: if isAdmin() && isValidId(templateId);
+    }
+  }
+}

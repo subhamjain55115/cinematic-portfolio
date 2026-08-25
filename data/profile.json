@@ -222,5 +222,165 @@
     { "label": "Facebook",  "href": "https://www.facebook.com/subhamjain55115" },
     { "label": "Threads",   "href": "https://www.threads.com/@subhamjain55115" },
     { "label": "WhatsApp",  "href": "https://wa.me/917023055115?text=Hi%20Subham" }
+  ],
+  "services": [
+    {
+      "id": "1",
+      "title": "Website Development",
+      "icon": "Globe",
+      "category": "Web Engineering",
+      "shortDesc": "High-performance, SEO-optimized modern websites crafted with Next.js, React, and cinematic GSAP animations.",
+      "features": [
+        "Custom Next.js & React Architecture",
+        "Core Web Vitals & 100/100 Lighthouse Score",
+        "Headless CMS & Dynamic Content Integrations",
+        "Responsive & Cross-Browser Precision"
+      ],
+      "tech": ["Next.js", "React", "Tailwind CSS", "GSAP", "TypeScript"],
+      "order": 1
+    },
+    {
+      "id": "2",
+      "title": "Web App & SaaS Development",
+      "icon": "Layers",
+      "category": "Full-Stack SaaS",
+      "shortDesc": "Scalable multi-tenant web applications, complex dashboards, loan management / fintech workflows, and real-time state synchronization.",
+      "features": [
+        "Multi-Tenant SaaS Architecture",
+        "Redux Toolkit & Zustand State Machines",
+        "Enterprise RBAC & Auth Security",
+        "Real-Time Telemetry & Visual Dashboards"
+      ],
+      "tech": ["React", "Redux Toolkit", "REST / GraphQL", "PostgreSQL", "Firebase"],
+      "order": 2
+    },
+    {
+      "id": "3",
+      "title": "Android & Mobile Apps",
+      "icon": "Smartphone",
+      "category": "Mobile Solutions",
+      "shortDesc": "Native and cross-platform mobile apps for Android with buttery-smooth 60fps animations, offline persistence, and cloud sync.",
+      "features": [
+        "React Native & Expo Ecosystem",
+        "Offline-First Data Synchronization",
+        "Push Notifications & Native Biometrics",
+        "Play Store Optimization & CI/CD Pipelines"
+      ],
+      "tech": ["React Native", "Android SDK", "Expo", "TypeScript", "Tailwind"],
+      "order": 3
+    },
+    {
+      "id": "4",
+      "title": "AI Agents & Intelligent Automation",
+      "icon": "Bot",
+      "category": "AI & Automation",
+      "shortDesc": "Autonomous LLM agents, chatbot-driven borrower onboarding, intelligent ticket routing, and conversational AI integrations.",
+      "features": [
+        "Contextual Conversational Agents",
+        "RAG & Vector Knowledge Embeddings",
+        "CRM & Webhook Automation Pipelines",
+        "Prompt Engineering & Safety Evaluation"
+      ],
+      "tech": ["Gemini 2.5", "LangChain", "Node.js", "Webhooks", "REST APIs"],
+      "order": 4
+    },
+    {
+      "id": "5",
+      "title": "UI/UX & Design Systems",
+      "icon": "Palette",
+      "category": "Product Design",
+      "shortDesc": "Production-ready component libraries, Figma design tokens translation, and fluid interactive micro-animations.",
+      "features": [
+        "150+ Modular Reusable Components",
+        "Accessible WCAG AA Compliant UI",
+        "Design Tokens & Dark/Light Theming",
+        "Figma to Pixel-Perfect Code Delivery"
+      ],
+      "tech": ["Tailwind CSS", "Figma", "CSS Modules", "Radix UI", "Storybook"],
+      "order": 5
+    },
+    {
+      "id": "6",
+      "title": "Cloud & API Architecture",
+      "icon": "Cpu",
+      "category": "Backend & Cloud",
+      "shortDesc": "Robust serverless backends, secure REST API integrations, and database architectures built for scale and zero downtime.",
+      "features": [
+        "Serverless Cloud Run & Edge Deployments",
+        "Firestore & Relational SQL DBs",
+        "OAuth 2.0 & Token Auth Security",
+        "High-Throughput Webhook Processing"
+      ],
+      "tech": ["Node.js", "Express", "Firebase", "Google Cloud", "PostgreSQL"],
+      "order": 6
+    }
+  ],
+  "templates": [
+    {
+      "id": "1",
+      "title": "Aura Couture",
+      "siteName": "Aura Fashion & Luxury",
+      "category": "Fashion",
+      "link": "https://crypto-tracker-navy-ten.vercel.app/",
+      "image": "/assets/projects/crypto-tracker.png",
+      "desc": "High-end luxury apparel and editorial lookbook e-commerce experience with interactive catalog browsing, fluid size configurator, and instant cart.",
+      "tech": ["Next.js", "Tailwind CSS", "Motion", "Stripe API"],
+      "order": 1
+    },
+    {
+      "id": "2",
+      "title": "Apex Capital",
+      "siteName": "Apex Fintech Dashboard",
+      "category": "Finance",
+      "link": "https://crypto-tracker-navy-ten.vercel.app/",
+      "image": "/assets/projects/crypto-tracker.png",
+      "desc": "Institutional-grade wealth management and loan origination dashboard featuring real-time risk assessment, credit scoring meters, and live charts.",
+      "tech": ["React", "Redux Toolkit", "Recharts", "Fintech LOS/LMS"],
+      "order": 2
+    },
+    {
+      "id": "3",
+      "title": "Velocity Turbo",
+      "siteName": "Velocity Supercars",
+      "category": "Automotive",
+      "link": "https://my-protfolio-react-three.vercel.app/",
+      "image": "/assets/projects/three-portfolio.jpeg",
+      "desc": "Interactive supercar showroom and 3D vehicle configurator with WebGL lighting, performance spec comparison, and VIP test-drive booking.",
+      "tech": ["Three.js", "React Three Fiber", "WebGL", "GSAP"],
+      "order": 3
+    },
+    {
+      "id": "4",
+      "title": "BlinkMart Quick-Commerce",
+      "siteName": "BlinkMart Delivery",
+      "category": "E-Commerce",
+      "link": "https://subham7769.github.io/Blinkit-clone/",
+      "image": "/assets/projects/blinkit-clone.png",
+      "desc": "Ultra-fast grocery and essentials delivery platform UI with instant aisle filtering, live cart recalculation, and category carousels.",
+      "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
+      "order": 4
+    },
+    {
+      "id": "5",
+      "title": "Pulse Eats",
+      "siteName": "Pulse Food Delivery",
+      "category": "Food & Hospitality",
+      "link": "https://subham7769.github.io/Food-delivery/",
+      "image": "/assets/projects/food-delivery.png",
+      "desc": "Multi-vendor food discovery and restaurant ordering portal with interactive menu modifiers, dietary filters, and visual checkout.",
+      "tech": ["JavaScript", "Responsive Web", "CSS Grid", "REST API"],
+      "order": 5
+    },
+    {
+      "id": "6",
+      "title": "Zenith EduPortal",
+      "siteName": "Zenith Learning Cloud",
+      "category": "EdTech & SaaS",
+      "link": "https://subham7769.github.io/Acciojob-New-Portal/",
+      "image": "/assets/projects/acciojob-portal.png",
+      "desc": "Enterprise student learning hub and curriculum portal featuring module progression tracking, code assignments, and mentor office hours.",
+      "tech": ["React", "CSS Modules", "JavaScript", "REST APIs"],
+      "order": 6
+    }
   ]
 }
