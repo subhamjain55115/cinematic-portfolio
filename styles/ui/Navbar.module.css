@@ -11,11 +11,12 @@
   color: var(--navbar-text);
 }
 
+.navLeft {
+  min-width: 80px;
+}
+
 .time {
-  font-size: 0.75rem;
-  font-weight: 600;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
+  display: none;
 }
 
 .navLink {

@@ -34,10 +34,7 @@ const description =
   "Frontend Developer with 5+ years of experience across scalable fintech and enterprise-grade applications, currently architecting a configurable Loan Origination & Loan Management SaaS platform with React, Redux Toolkit, and Agentic AI.";
 
 export const viewport = {
-  themeColor: [
-    { media: "(prefers-color-scheme: dark)", color: "#080808" },
-    { media: "(prefers-color-scheme: light)", color: "#080808" },
-  ],
+  themeColor: "#080808",
   width: "device-width",
   initialScale: 1,
   maximumScale: 5,

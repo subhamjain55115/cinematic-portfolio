@@ -12,13 +12,9 @@ import WorkExperienceSection from '@/components/sections/WorkExperienceSection'
 import CertificationsSection from '@/components/sections/CertificationsSection'
 import PublicationsFooterSection from '@/components/sections/PublicationsFooterSection'
 import ScreenLoader from '@/components/sections/ScreenLoader'
-import profile               from '@/data/profile.json'
-import { usePortfolio }       from '@/context/PortfolioContext'
 
 export default function Home() {
-  const { projects }   = usePortfolio()
-  const projectCount   = projects?.length || profile.projects.length
-  const totalSlides    = 9 + projectCount
+  const totalSlides    = 10
 
   const mainRef        = useRef(null)
   const idxRef         = useRef(0)
@@ -31,7 +27,31 @@ export default function Home() {
     const el = mainRef.current
     if (!el) return
 
-    const total = 9 + (projects?.length || profile.projects.length)
+    const total = 10
+
+    // Detect if an event target is inside a scrollable container
+    function getScrollableParent(target) {
+      let node = target
+      while (node && node !== el && node !== document.body) {
+        if (node.getAttribute?.('data-scrollable') === 'true') {
+          return node
+        }
+        if (node.classList?.contains('scrollable-container')) {
+          return node
+        }
+        try {
+          const style = window.getComputedStyle(node)
+          const overflowY = style.overflowY
+          if ((overflowY === 'auto' || overflowY === 'scroll') && node.scrollHeight > node.clientHeight + 4) {
+            return node
+          }
+        } catch {
+          // ignore
+        }
+        node = node.parentElement
+      }
+      return null
+    }
 
     // Fade to black → instant scrollTop jump → fade in
     // Used whenever we loop footer → first section
@@ -88,15 +108,56 @@ export default function Home() {
       })
     }
 
+    let atEdgeTimer = 0
     function onWheel(e) {
+      const scrollable = getScrollableParent(e.target)
+      if (scrollable) {
+        const delta = e.deltaY
+        const { scrollTop, scrollHeight, clientHeight } = scrollable
+        const canScrollDown = delta > 0 && scrollTop + clientHeight < scrollHeight - 6
+        const canScrollUp   = delta < 0 && scrollTop > 6
+
+        if (canScrollDown || canScrollUp) {
+          atEdgeTimer = 0
+          return
+        }
+
+        // At scroll boundary
+        const now = Date.now()
+        if (!atEdgeTimer) {
+          atEdgeTimer = now
+          e.preventDefault()
+          return
+        }
+        if (now - atEdgeTimer < 350) {
+          e.preventDefault()
+          return
+        }
+        atEdgeTimer = 0
+      }
+
       e.preventDefault()
       if (busyRef.current) return
       goTo(idxRef.current + (e.deltaY > 0 ? 1 : -1))
     }
 
     let touchY = 0
-    function onTouchStart(e) { touchY = e.touches[0].clientY }
+    let touchTarget = null
+    function onTouchStart(e) {
+      touchY = e.touches[0].clientY
+      touchTarget = e.target
+    }
     function onTouchEnd(e) {
+      const scrollable = getScrollableParent(touchTarget)
+      if (scrollable) {
+        const dy = touchY - e.changedTouches[0].clientY
+        const { scrollTop, scrollHeight, clientHeight } = scrollable
+        const canScrollDown = dy > 0 && scrollTop + clientHeight < scrollHeight - 10
+        const canScrollUp   = dy < 0 && scrollTop > 10
+        if (canScrollDown || canScrollUp) {
+          return
+        }
+      }
       const dy = touchY - e.changedTouches[0].clientY
       if (Math.abs(dy) < 40 || busyRef.current) return
       goTo(idxRef.current + (dy > 0 ? 1 : -1))
@@ -118,14 +179,29 @@ export default function Home() {
     el.addEventListener('scroll', onScroll, { passive: true  })
 
     let mTouchY = 0
-    function onMobileTouchStart(e) { mTouchY = e.touches[0].clientY }
+    let mTouchTarget = null
+    function onMobileTouchStart(e) {
+      mTouchY = e.touches[0].clientY
+      mTouchTarget = e.target
+    }
     function onMobileTouchEnd(e) {
+      const scrollable = getScrollableParent(mTouchTarget)
+      if (scrollable) {
+        const dy = mTouchY - e.changedTouches[0].clientY
+        const { scrollTop, scrollHeight, clientHeight } = scrollable
+        const canScrollDown = dy > 0 && scrollTop + clientHeight < scrollHeight - 10
+        const canScrollUp   = dy < 0 && scrollTop > 10
+        if (canScrollDown || canScrollUp) {
+          return
+        }
+      }
       const dy = mTouchY - e.changedTouches[0].clientY
       if (Math.abs(dy) < 40) return
       const atBottom = el.scrollTop + el.clientHeight >= el.scrollHeight - 8
       const atTop    = el.scrollTop < 8
       if (dy > 0 && atBottom) fadeLoop(0, 0)
       if (dy < 0 && atTop)    fadeLoop(el.scrollHeight - el.clientHeight, total - 1)
+      else if (Math.abs(dy) >= 40 && !busyRef.current) goTo(idxRef.current + (dy > 0 ? 1 : -1))
     }
 
     if (!isMobile) {
@@ -150,7 +226,7 @@ export default function Home() {
       window.removeEventListener('footer-loop-back', onFooterLoop)
       tweenRef.current?.kill()
     }
-  }, [projects])
+  }, [])
 
   return (
     <>

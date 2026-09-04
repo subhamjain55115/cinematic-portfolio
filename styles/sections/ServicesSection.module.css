@@ -79,15 +79,34 @@
   font-weight: 400;
 }
 
-/* ── Segmented Navigation Controls ─────────────── */
-.navControls {
+/* ── Header Right Badges ───────────────────────── */
+.headerRight {
   display: flex;
   align-items: center;
+  gap: 0.75rem;
+}
+
+.totalBadge {
+  display: inline-flex;
+  align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 0.4rem 0.95rem;
   border-radius: 9999px;
-  padding: 4px;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.12);
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: rgba(255, 255, 255, 0.8);
+  letter-spacing: 0.04em;
+}
+
+.totalBadgeNum {
+  background: var(--accent, #f97316);
+  color: #080808;
+  font-size: 0.72rem;
+  font-weight: 800;
+  padding: 0.1rem 0.45rem;
+  border-radius: 9999px;
 }
 
 .tabBtn {
@@ -145,19 +164,26 @@
   padding: 0.5rem clamp(1.5rem, 5vw, 4.5rem) clamp(2rem, 4vh, 3.5rem);
   position: relative;
   z-index: 2;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(249, 115, 22, 0.3) rgba(255, 255, 255, 0.03);
+  scrollbar-color: rgba(249, 115, 22, 0.45) rgba(255, 255, 255, 0.04);
 }
 
 .container::-webkit-scrollbar {
-  width: 6px;
+  width: 7px;
 }
 .container::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.02);
+  background: rgba(255, 255, 255, 0.03);
+  border-radius: 4px;
 }
 .container::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.3);
-  border-radius: 3px;
+  background: rgba(249, 115, 22, 0.35);
+  border-radius: 4px;
+  transition: background 0.2s ease;
+}
+.container::-webkit-scrollbar-thumb:hover {
+  background: rgba(249, 115, 22, 0.7);
 }
 
 /* ── Services Grid ──────────────────────────────── */
@@ -328,17 +354,50 @@
 }
 
 /* ── Category Filter Bar for Templates ──────────── */
+.categoryBarWrap {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin-bottom: 1.25rem;
+  flex-wrap: wrap;
+}
+
 .categoryBar {
   display: flex;
   align-items: center;
   gap: 0.5rem;
   overflow-x: auto;
-  padding-bottom: 0.75rem;
-  margin-bottom: 1.25rem;
+  padding-bottom: 0.25rem;
   scrollbar-width: none;
 }
 .categoryBar::-webkit-scrollbar {
   display: none;
+}
+
+.scrollIndicator {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.74rem;
+  color: var(--accent, #f97316);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  opacity: 0.9;
+  user-select: none;
+}
+
+.scrollArrow {
+  animation: bounceArrow 1.6s ease-in-out infinite;
+}
+
+@keyframes bounceArrow {
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(3px);
+  }
 }
 
 .catBtn {
@@ -482,6 +541,25 @@
   margin-bottom: 0.5rem;
 }
 
+.metaBadges {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+}
+
+.featuredBadge {
+  font-size: 0.65rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: #38bdf8;
+  background: rgba(56, 189, 248, 0.12);
+  border: 1px solid rgba(56, 189, 248, 0.3);
+  padding: 0.15rem 0.5rem;
+  border-radius: 4px;
+}
+
 .templateCategory {
   font-size: 0.7rem;
   font-weight: 700;
@@ -543,6 +621,62 @@
   background: #ffffff;
   color: #000000;
   transform: translateX(2px);
+}
+
+/* ── End of Showcase / Bottom Cue ───────────────── */
+.endOfShowcase {
+  margin-top: 3rem;
+  padding-bottom: 2.5rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.25rem;
+}
+
+.endOfShowcaseLine {
+  width: 100%;
+  max-width: 600px;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.12), transparent);
+}
+
+.endOfShowcaseContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.endOfShowcaseText {
+  font-size: 0.8rem;
+  color: rgba(255, 255, 255, 0.45);
+  letter-spacing: 0.04em;
+  margin: 0;
+  text-align: center;
+}
+
+.nextSectionBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.55rem 1.4rem;
+  border-radius: 9999px;
+  background: rgba(249, 115, 22, 0.08);
+  border: 1px solid rgba(249, 115, 22, 0.3);
+  color: var(--accent, #f97316);
+  font-size: 0.82rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  user-select: none;
+}
+
+.nextSectionBtn:hover {
+  background: var(--accent, #f97316);
+  color: #080808;
+  border-color: var(--accent, #f97316);
+  transform: translateY(2px);
+  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.25);
 }
 
 /* ── Responsive Queries ─────────────────────────── */

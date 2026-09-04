@@ -1,6 +1,6 @@
 'use client'
 
-import { useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import Link from 'next/link'
 import {
   NavigationMenu,
@@ -15,23 +15,7 @@ import ThemeSwitcher from '@/components/ui/ThemeSwitcher'
 import styles from '@/styles/ui/Navbar.module.css'
 import { FaBars, FaTimes } from 'react-icons/fa'
 
-function getIST() {
-  return new Date().toLocaleTimeString('en-IN', {
-    timeZone: 'Asia/Kolkata',
-    hour: '2-digit',
-    minute: '2-digit',
-    second: '2-digit',
-    hour12: true,
-  }).toUpperCase()
-}
-
-function subscribeTime(callback) {
-  const id = setInterval(callback, 1000)
-  return () => clearInterval(id)
-}
-
 export default function Navbar() {
-  const time = useSyncExternalStore(subscribeTime, getIST, () => '')
   const { projects, isAdmin } = usePortfolio()
   const [onIntro, setOnIntro] = useState(true)
   const [onDark,  setOnDark]  = useState(false)
@@ -41,16 +25,15 @@ export default function Navbar() {
   const hidden      = useRef(false)
   const stopTimer   = useRef(null)
 
-  const projectCount = projects?.length || 5
   const navItems = [
     { label: 'Home',           idx: 0 },
     { label: 'About',          idx: 2 },
-    { label: 'Work',           idx: 3 },
-    { label: 'Services',       idx: 3 + projectCount },
-    { label: 'Experience',     idx: 4 + projectCount },
-    { label: 'Certifications', idx: 5 + projectCount },
-    { label: 'Impact',         idx: 6 + projectCount },
-    { label: 'Contact',        idx: 7 + projectCount },
+    { label: 'Projects',       idx: 3 },
+    { label: 'Services',       idx: 4 },
+    { label: 'Experience',     idx: 5 },
+    { label: 'Certifications', idx: 6 },
+    { label: 'Impact',         idx: 7 },
+    { label: 'Contact',        idx: 9 },
   ]
 
   // Auto-hide on scroll-down, reveal on scroll-up or scroll-stop
@@ -96,7 +79,7 @@ export default function Navbar() {
   return (
     <>
       <header ref={headerRef} className={`${styles.header} ${onIntro ? styles.introMode : ''} ${onDark ? styles.darkMode : ''}`}>
-        <span className={styles.time}>INDIA TIME - {time}</span>
+        <div className={styles.navLeft} />
 
         <NavigationMenu className={styles.navMenu}>
           <NavigationMenuList className="flex gap-6 items-center">
@@ -122,8 +105,6 @@ export default function Navbar() {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
-          <ThemeSwitcher variant="navbar" />
-
           <Link
             href="/admin"
             className="text-xs px-3 py-1.5 rounded-full border border-orange-400/40 text-orange-500 hover:bg-orange-500/10 transition-colors font-medium"

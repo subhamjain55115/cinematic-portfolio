@@ -33,7 +33,12 @@ import {
   Code,
   LayoutGrid,
   Link2,
+  RotateCcw,
+  Search,
+  Star,
+  Filter,
 } from 'lucide-react'
+import { FaGithub } from 'react-icons/fa6'
 import { usePortfolio } from '@/context/PortfolioContext'
 
 export default function AdminPage() {
@@ -63,6 +68,7 @@ export default function AdminPage() {
     removeServ,
     saveTempl,
     removeTempl,
+    syncTemplates,
     resetToDefaults,
   } = usePortfolio()
 
@@ -93,18 +99,53 @@ export default function AdminPage() {
     }
   }
 
-  // Project Modal / Form State
+  // Work & Projects State & Computed Items
+  const workItems = React.useMemo(() => {
+    return (templates && templates.length > 0) ? templates : (projects || [])
+  }, [templates, projects])
+  const [workFilterCategory, setWorkFilterCategory] = useState('ALL')
+  const [workSearchQuery, setWorkSearchQuery] = useState('')
+
+  const workCategories = React.useMemo(() => {
+    const cats = new Set(['ALL'])
+    workItems.forEach((item) => {
+      if (item.category) cats.add(item.category)
+    })
+    return Array.from(cats)
+  }, [workItems])
+
+  const filteredWorkItems = React.useMemo(() => {
+    return workItems.filter((item) => {
+      const matchesCat = workFilterCategory === 'ALL' || item.category === workFilterCategory
+      const q = workSearchQuery.toLowerCase().trim()
+      const matchesQuery =
+        !q ||
+        item.title?.toLowerCase().includes(q) ||
+        item.siteName?.toLowerCase().includes(q) ||
+        item.subtitle?.toLowerCase().includes(q) ||
+        item.category?.toLowerCase().includes(q) ||
+        (Array.isArray(item.tech) && item.tech.some((t) => t.toLowerCase().includes(q)))
+      return matchesCat && matchesQuery
+    })
+  }, [workItems, workFilterCategory, workSearchQuery])
+
+  // Project Modal / Form State (Unified with Templates & Work)
   const [projectForm, setProjectForm] = useState({
     id: '',
     title: '',
-    subtitle: '',
-    type: 'Fintech SaaS',
+    siteName: '',
+    category: 'Featured Work',
     link: '',
+    previewUrl: '',
+    githubUrl: '',
     image: '',
+    desc: '',
+    features: [],
+    newFeature: '',
     tech: [],
     newTech: '',
-    desc: '',
     order: 1,
+    isWork: true,
   })
   const [isEditingProject, setIsEditingProject] = useState(false)
 
@@ -283,35 +324,45 @@ export default function AdminPage() {
     }
   }
 
-  // --- Project Handlers ---
+  // --- Work & Project Handlers ---
   const openNewProject = () => {
     setProjectForm({
       id: String(Date.now()),
       title: '',
-      subtitle: '',
-      type: 'Web App',
-      link: '',
+      siteName: '',
+      category: 'Featured Work',
+      link: 'https://',
+      previewUrl: '',
+      githubUrl: '',
       image: '/assets/projects/crypto-tracker.png',
+      desc: '',
+      features: [],
+      newFeature: '',
       tech: ['React', 'Next.js', 'Tailwind CSS'],
       newTech: '',
-      desc: '',
-      order: (projects?.length || 0) + 1,
+      order: (workItems.length + 1),
+      isWork: true,
     })
     setIsEditingProject(true)
   }
 
-  const openEditProject = (proj) => {
+  const openEditProject = (item) => {
     setProjectForm({
-      id: proj.id,
-      title: proj.title || '',
-      subtitle: proj.subtitle || '',
-      type: proj.type || 'Web App',
-      link: proj.link || '',
-      image: proj.image || '',
-      tech: proj.tech || [],
+      id: item.id,
+      title: item.title || '',
+      siteName: item.siteName || item.subtitle || '',
+      category: item.category || item.type || 'Featured Work',
+      link: item.link || item.previewUrl || '',
+      previewUrl: item.previewUrl || item.link || '',
+      githubUrl: item.githubUrl || item.github || '',
+      image: item.image || '',
+      desc: item.desc || '',
+      features: Array.isArray(item.features) ? item.features : [],
+      newFeature: '',
+      tech: Array.isArray(item.tech) ? item.tech : [],
       newTech: '',
-      desc: proj.desc || '',
-      order: proj.order || 1,
+      order: Number(item.order) || 1,
+      isWork: item.isWork !== undefined ? Boolean(item.isWork) : (item.category === 'Featured Work'),
     })
     setIsEditingProject(true)
   }
@@ -319,13 +370,20 @@ export default function AdminPage() {
   const handleSaveProject = async (e) => {
     e.preventDefault()
     if (!projectForm.title.trim()) {
-      showToast('Please enter a project title', 'error')
+      showToast('Project title is required', 'error')
       return
     }
     setLoadingAction(true)
     try {
-      await saveProj(projectForm)
-      showToast(`Project "${projectForm.title}" saved`)
+      const payload = {
+        ...projectForm,
+        siteName: projectForm.siteName.trim() || projectForm.title.toLowerCase().replace(/[^a-z0-9]/g, '-') + '.vercel.app',
+        link: projectForm.link.trim() || projectForm.previewUrl.trim(),
+        previewUrl: projectForm.previewUrl.trim() || projectForm.link.trim(),
+        githubUrl: projectForm.githubUrl.trim(),
+      }
+      await saveTempl(payload)
+      showToast(`Work project "${projectForm.title}" saved successfully`)
       setIsEditingProject(false)
     } catch (err) {
       showToast('Failed to save project: ' + err.message, 'error')
@@ -337,12 +395,18 @@ export default function AdminPage() {
   const handleDeleteProject = async (id, title) => {
     if (!confirm(`Delete project "${title}"?`)) return
     try {
-      await removeProj(id)
+      await removeTempl(id)
       showToast(`Deleted "${title}"`)
     } catch (err) {
       showToast('Failed to delete: ' + err.message, 'error')
     }
   }
+
+  // Backward-compatible aliases
+  const openNewTemplate = openNewProject
+  const openEditTemplate = openEditProject
+  const handleSaveTemplate = handleSaveProject
+  const handleDeleteTemplate = handleDeleteProject
 
   // --- Experience Handlers ---
   const openNewExp = () => {
@@ -529,64 +593,16 @@ export default function AdminPage() {
     }
   }
 
-  // --- Template Projects Handlers ---
-  const openNewTemplate = () => {
-    setTemplateForm({
-      id: String(Date.now()),
-      title: '',
-      siteName: '',
-      category: 'Fashion',
-      link: 'https://',
-      image: '/assets/projects/crypto-tracker.png',
-      desc: '',
-      tech: ['Next.js', 'Tailwind CSS', 'Stripe'],
-      newTech: '',
-      order: (templates?.length || 0) + 1,
-    })
-    setIsEditingTemplate(true)
-  }
-
-  const openEditTemplate = (t) => {
-    setTemplateForm({
-      id: t.id,
-      title: t.title || '',
-      siteName: t.siteName || '',
-      category: t.category || 'Fashion',
-      link: t.link || '',
-      image: t.image || '',
-      desc: t.desc || '',
-      tech: t.tech || [],
-      newTech: '',
-      order: t.order || 1,
-    })
-    setIsEditingTemplate(true)
-  }
-
-  const handleSaveTemplate = async (e) => {
-    e.preventDefault()
-    if (!templateForm.title.trim() || !templateForm.siteName.trim()) {
-      showToast('Template title and site name are required', 'error')
-      return
-    }
+  const handleSyncDefaultTemplates = async () => {
+    if (!confirm('Sync all 21 projects and templates into Firestore?')) return
     setLoadingAction(true)
     try {
-      await saveTempl(templateForm)
-      showToast(`Template "${templateForm.title}" saved`)
-      setIsEditingTemplate(false)
+      await syncTemplates()
+      showToast('Successfully synced all 21 projects and templates!')
     } catch (err) {
-      showToast('Failed to save template: ' + err.message, 'error')
+      showToast('Failed to sync templates: ' + err.message, 'error')
     } finally {
       setLoadingAction(false)
-    }
-  }
-
-  const handleDeleteTemplate = async (id, title) => {
-    if (!confirm(`Delete template project "${title}"?`)) return
-    try {
-      await removeTempl(id)
-      showToast(`Deleted "${title}"`)
-    } catch (err) {
-      showToast('Failed to delete template: ' + err.message, 'error')
     }
   }
 
@@ -678,9 +694,29 @@ export default function AdminPage() {
             </div>
 
             {authError && (
-              <div className="mb-5 p-3 rounded-xl bg-red-950/50 border border-red-500/40 text-red-300 text-xs flex items-center gap-2">
-                <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
-                <span>{authError}</span>
+              <div className="mb-5 p-3.5 rounded-xl bg-red-950/60 border border-red-500/40 text-red-300 text-xs space-y-2">
+                <div className="flex items-center gap-2 font-semibold text-red-200">
+                  <AlertCircle className="w-4 h-4 shrink-0 text-red-400" />
+                  <span>{authError}</span>
+                </div>
+                {authError.toLowerCase().includes('unauthorized-domain') && typeof window !== 'undefined' && (
+                  <div className="bg-black/40 p-2.5 rounded-lg border border-red-500/20 text-[11px] leading-relaxed text-slate-300">
+                    <p className="mb-1.5 font-medium text-orange-300">
+                      Domain Authorization Required in Firebase:
+                    </p>
+                    <p className="mb-2">
+                      Firebase Auth blocks Google Sign-In on new domains until they are whitelisted. You need to add <code className="text-white bg-white/10 px-1 py-0.5 rounded font-mono font-bold">{window.location.hostname}</code> to Authorized Domains.
+                    </p>
+                    <a
+                      href="https://console.firebase.google.com/project/distributed-dahlia-kt8c4/authentication/settings"
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="inline-flex items-center gap-1.5 text-orange-400 hover:text-orange-300 underline font-medium"
+                    >
+                      Open Firebase Console &rarr; Auth Settings &rarr; Authorized Domains
+                    </a>
+                  </div>
+                )}
               </div>
             )}
 
@@ -794,13 +830,13 @@ export default function AdminPage() {
                 <button
                   onClick={() => setActiveTab('work')}
                   className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold tracking-wide whitespace-nowrap transition-all ${
-                    activeTab === 'work'
+                    activeTab === 'work' || activeTab === 'templates'
                       ? 'bg-orange-500 text-black shadow-md shadow-orange-500/20 font-bold'
                       : 'text-slate-400 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   <Layers className="w-3.5 h-3.5 shrink-0" />
-                  <span>Work ({projects?.length || 0})</span>
+                  <span>Work &amp; Projects ({workItems?.length || 0})</span>
                 </button>
 
                 <button
@@ -838,22 +874,20 @@ export default function AdminPage() {
                   <Sparkles className="w-3.5 h-3.5 shrink-0" />
                   <span>Services ({services?.length || 0})</span>
                 </button>
-
-                <button
-                  onClick={() => setActiveTab('templates')}
-                  className={`flex items-center gap-2 px-3.5 sm:px-4 py-2 rounded-xl text-xs font-semibold tracking-wide whitespace-nowrap transition-all ${
-                    activeTab === 'templates'
-                      ? 'bg-orange-500 text-black shadow-md shadow-orange-500/20 font-bold'
-                      : 'text-slate-400 hover:text-white hover:bg-white/5'
-                  }`}
-                >
-                  <LayoutGrid className="w-3.5 h-3.5 shrink-0" />
-                  <span>Templates ({templates?.length || 0})</span>
-                </button>
               </div>
 
               {/* Seed / Sync Tool */}
               <div className="flex items-center gap-2 shrink-0">
+                <button
+                  onClick={handleSyncDefaultTemplates}
+                  disabled={loadingAction}
+                  className="w-full sm:w-auto flex items-center justify-center gap-1.5 px-3 py-2 rounded-xl text-xs font-semibold text-orange-300 bg-orange-500/10 hover:bg-orange-500/20 border border-orange-500/30 transition-colors"
+                  title="Sync all 21 templates and work projects with Firestore"
+                >
+                  <RotateCcw className="w-3.5 h-3.5 text-orange-400 shrink-0" />
+                  <span>Sync Like Main Site (21)</span>
+                </button>
+
                 <button
                   onClick={handleSeedDefaults}
                   disabled={loadingAction}
@@ -1060,134 +1094,322 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* TAB 2: WORK & PROJECTS */}
-            {activeTab === 'work' && (
-              <div>
-                <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+            {/* TAB 2: WORK & PROJECTS (Unified with Templates) */}
+            {(activeTab === 'work' || activeTab === 'templates') && (
+              <div className="space-y-6">
+                {/* Header & Main Actions */}
+                <div className="flex flex-col md:flex-row md:items-center justify-between gap-4 bg-[#15151b] border border-white/5 rounded-2xl p-4 sm:p-6 shadow-xl">
                   <div>
                     <h2 className="text-base sm:text-lg font-bold text-white flex items-center gap-2">
                       <Layers className="w-4 h-4 sm:w-5 sm:h-5 text-orange-400 shrink-0" />
-                      <span>Manage Featured Projects</span>
+                      <span>Manage Work &amp; Projects ({workItems?.length || 0})</span>
                     </h2>
-                    <p className="text-xs text-slate-400 mt-0.5">
-                      Add, update, or remove interactive work items showcased in the horizontal scroll slide.
+                    <p className="text-xs text-slate-400 mt-1 max-w-xl leading-relaxed">
+                      All live templates, client deliverables, and case studies showcased on the main site. Changes are synchronized directly with Firestore.
                     </p>
                   </div>
-                  <button
-                    onClick={openNewProject}
-                    className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl transition-all shadow-md shadow-orange-500/20 w-full sm:w-auto"
-                  >
-                    <Plus className="w-4 h-4" />
-                    <span>New Project</span>
-                  </button>
+
+                  <div className="flex flex-wrap sm:flex-nowrap items-center gap-2.5">
+                    <button
+                      onClick={handleSyncDefaultTemplates}
+                      disabled={loadingAction}
+                      className="flex items-center justify-center gap-2 px-3.5 py-2.5 bg-white/5 hover:bg-orange-500/10 text-slate-300 hover:text-orange-300 font-medium text-xs rounded-xl border border-white/10 hover:border-orange-500/30 transition-all shadow-sm"
+                      title="Sync all 21 default templates and work projects with Firestore"
+                    >
+                      <RotateCcw className={`w-3.5 h-3.5 text-orange-400 ${loadingAction ? 'animate-spin' : ''}`} />
+                      <span>Sync Like Main Site (21)</span>
+                    </button>
+
+                    <button
+                      onClick={openNewProject}
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-all"
+                    >
+                      <Plus className="w-4 h-4" />
+                      <span>New Project</span>
+                    </button>
+                  </div>
                 </div>
 
-                {/* Projects List */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                  {projects.map((proj, idx) => (
-                    <div
-                      key={proj.id || idx}
-                      className="bg-[#15151b] border border-white/5 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between group hover:border-orange-500/40 transition-all"
-                    >
-                      <div className="relative aspect-video w-full bg-black/60 overflow-hidden">
-                        {proj.image ? (
-                          <img
-                            src={proj.image}
-                            alt={proj.title}
-                            className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
-                          />
-                        ) : null}
-                        <div className="absolute top-2.5 left-2.5 px-2.5 py-0.5 rounded-md bg-black/80 backdrop-blur-md text-[11px] font-semibold text-orange-400 border border-white/10">
-                          {proj.type || 'Web App'}
-                        </div>
-                        <div className="absolute top-2.5 right-2.5 px-2.5 py-0.5 rounded-md bg-black/80 backdrop-blur-md text-[11px] font-bold text-white">
-                          #{proj.order || idx + 1}
-                        </div>
-                      </div>
+                {/* Filter & Live Search Bar */}
+                <div className="bg-[#15151b] border border-white/5 rounded-2xl p-3 sm:p-4 space-y-3">
+                  <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+                    {/* Search Field */}
+                    <div className="relative flex-1">
+                      <Search className="w-3.5 h-3.5 text-slate-400 absolute left-3 top-1/2 -translate-y-1/2" />
+                      <input
+                        type="text"
+                        value={workSearchQuery}
+                        onChange={(e) => setWorkSearchQuery(e.target.value)}
+                        placeholder="Search by title, domain, category, tech..."
+                        className="w-full bg-black/40 border border-white/10 rounded-xl pl-9 pr-8 py-2 text-xs text-white placeholder:text-slate-500 focus:outline-none focus:border-orange-500/60"
+                      />
+                      {workSearchQuery && (
+                        <button
+                          onClick={() => setWorkSearchQuery('')}
+                          className="absolute right-2.5 top-1/2 -translate-y-1/2 text-slate-400 hover:text-white text-xs p-1"
+                          title="Clear search"
+                        >
+                          ✕
+                        </button>
+                      )}
+                    </div>
 
-                      <div className="p-4 sm:p-5 flex-1 flex flex-col justify-between">
-                        <div>
-                          <h3 className="font-bold text-white text-base mb-1">
-                            {proj.title}
-                          </h3>
-                          {proj.subtitle && (
-                            <p className="text-xs text-orange-300/80 mb-2 font-medium">
-                              {proj.subtitle}
-                            </p>
-                          )}
-                          <p className="text-xs text-slate-400 line-clamp-3 leading-relaxed mb-4">
-                            {proj.desc}
-                          </p>
+                    <div className="text-xs text-slate-400 shrink-0 font-mono">
+                      Showing <span className="text-orange-400 font-bold">{filteredWorkItems.length}</span> of {workItems.length} items
+                    </div>
+                  </div>
 
-                          {proj.tech && proj.tech.length > 0 && (
-                            <div className="flex flex-wrap gap-1.5 mb-4">
-                              {proj.tech.map((t, ti) => (
+                  {/* Category Pills */}
+                  <div className="flex items-center gap-1.5 overflow-x-auto pb-1 scrollbar-none pt-1">
+                    {workCategories.map((cat) => {
+                      const count =
+                        cat === 'ALL'
+                          ? workItems.length
+                          : workItems.filter((w) => w.category === cat).length
+                      const isActive = workFilterCategory === cat
+                      return (
+                        <button
+                          key={cat}
+                          onClick={() => setWorkFilterCategory(cat)}
+                          className={`px-3 py-1 rounded-lg text-[11px] font-semibold tracking-wide whitespace-nowrap transition-all flex items-center gap-1.5 ${
+                            isActive
+                              ? 'bg-orange-500 text-black font-bold shadow-sm shadow-orange-500/20'
+                              : 'bg-white/5 text-slate-400 hover:text-white hover:bg-white/10 border border-white/5'
+                          }`}
+                        >
+                          <span>{cat}</span>
+                          <span
+                            className={`px-1.5 py-0.2 rounded-full text-[9px] ${
+                              isActive ? 'bg-black/20 text-black' : 'bg-white/10 text-slate-400'
+                            }`}
+                          >
+                            {count}
+                          </span>
+                        </button>
+                      )
+                    })}
+                  </div>
+                </div>
+
+                {/* Projects & Work Grid */}
+                {filteredWorkItems.length === 0 ? (
+                  <div className="bg-[#15151b] border border-white/5 rounded-2xl p-12 text-center">
+                    <Layers className="w-8 h-8 text-slate-600 mx-auto mb-3" />
+                    <h3 className="text-sm font-semibold text-white mb-1">No Projects Found</h3>
+                    <p className="text-xs text-slate-400 max-w-sm mx-auto mb-4">
+                      {workSearchQuery || workFilterCategory !== 'ALL'
+                        ? 'No work projects matched your filter criteria.'
+                        : 'No projects currently in database. Click below to synchronize all 21 items from profile.'}
+                    </p>
+                    {workSearchQuery || workFilterCategory !== 'ALL' ? (
+                      <button
+                        onClick={() => {
+                          setWorkSearchQuery('')
+                          setWorkFilterCategory('ALL')
+                        }}
+                        className="px-4 py-2 bg-white/10 hover:bg-white/15 text-xs text-white rounded-xl font-medium transition-colors"
+                      >
+                        Clear Filters
+                      </button>
+                    ) : (
+                      <button
+                        onClick={handleSyncDefaultTemplates}
+                        disabled={loadingAction}
+                        className="px-4 py-2 bg-orange-500 hover:bg-orange-400 text-black text-xs font-bold rounded-xl transition-all shadow-md shadow-orange-500/20"
+                      >
+                        Sync Like Main Site (21 Items)
+                      </button>
+                    )}
+                  </div>
+                ) : (
+                  <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
+                    {filteredWorkItems.map((item, idx) => {
+                      const isFeatured = item.isWork || item.category === 'Featured Work'
+                      const demoUrl = item.link || item.previewUrl || ''
+                      const repoUrl = item.githubUrl || item.github || ''
+
+                      return (
+                        <div
+                          key={item.id || idx}
+                          className="bg-[#15151b] border border-white/5 hover:border-white/15 rounded-2xl overflow-hidden shadow-lg flex flex-col justify-between transition-all group hover:shadow-2xl hover:shadow-orange-500/5"
+                        >
+                          <div>
+                            {/* Card Hero Screenshot */}
+                            <div className="relative aspect-video w-full bg-black/60 overflow-hidden border-b border-white/5">
+                              {item.image ? (
+                                <img
+                                  src={item.image}
+                                  alt={item.title}
+                                  onError={(e) => {
+                                    e.currentTarget.src = '/assets/projects/crypto-tracker.png'
+                                  }}
+                                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
+                                />
+                              ) : (
+                                <div className="w-full h-full flex items-center justify-center text-slate-600 text-xs font-mono">
+                                  No Image
+                                </div>
+                              )}
+
+                              {/* Category Badge */}
+                              <div className="absolute top-2.5 left-2.5 flex items-center gap-1.5">
                                 <span
-                                  key={ti}
-                                  className="text-[10px] px-2 py-0.5 rounded-full bg-white/5 border border-white/5 text-slate-300"
+                                  className={`px-2.5 py-0.5 rounded-md text-[10px] font-bold uppercase tracking-wider backdrop-blur-md border ${
+                                    isFeatured
+                                      ? 'bg-orange-500/90 text-black border-orange-400/50 shadow-sm'
+                                      : 'bg-black/80 text-orange-400 border-white/10'
+                                  }`}
                                 >
-                                  {t}
+                                  {item.category || item.type || 'Web'}
                                 </span>
-                              ))}
+                              </div>
+
+                              {/* Order & Actions Overlay */}
+                              <div className="absolute top-2.5 right-2.5 flex items-center gap-1.5">
+                                <span className="bg-black/80 backdrop-blur-md px-2 py-0.5 rounded-md text-[10px] font-mono text-slate-300 border border-white/10">
+                                  #{String(item.order || idx + 1).padStart(2, '0')}
+                                </span>
+
+                                <div className="flex items-center gap-1 bg-black/80 backdrop-blur-md p-0.5 rounded-md border border-white/10">
+                                  <button
+                                    onClick={() => openEditProject(item)}
+                                    className="p-1 text-slate-300 hover:text-white hover:bg-white/10 rounded transition-colors"
+                                    title="Edit Work Project"
+                                  >
+                                    <Edit2 className="w-3 h-3" />
+                                  </button>
+                                  <button
+                                    onClick={() => handleDeleteProject(item.id, item.title)}
+                                    className="p-1 text-slate-300 hover:text-red-400 hover:bg-red-500/20 rounded transition-colors"
+                                    title="Delete Work Project"
+                                  >
+                                    <Trash2 className="w-3 h-3" />
+                                  </button>
+                                </div>
+                              </div>
+
+                              {/* Featured Indicator Pill */}
+                              {isFeatured && (
+                                <div className="absolute bottom-2 left-2.5 flex items-center gap-1 px-2 py-0.5 rounded-full bg-amber-500/90 backdrop-blur-sm text-black text-[9px] font-bold">
+                                  <Star className="w-2.5 h-2.5 fill-black" />
+                                  <span>Featured Work</span>
+                                </div>
+                              )}
                             </div>
-                          )}
-                        </div>
 
-                        <div className="flex items-center justify-between pt-4 border-t border-white/5">
-                          {proj.link ? (
-                            <a
-                              href={proj.link}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="text-xs text-slate-400 hover:text-orange-400 flex items-center gap-1 transition-colors min-h-[36px] py-1"
-                            >
-                              <ExternalLink className="w-3.5 h-3.5" />
-                              <span>Live Demo</span>
-                            </a>
-                          ) : (
-                            <span className="text-xs text-slate-600">No link</span>
-                          )}
+                            {/* Card Content Body */}
+                            <div className="p-4 space-y-2">
+                              <div className="flex items-center justify-between text-xs text-slate-400">
+                                <span className="font-mono text-[11px] text-slate-300 truncate max-w-[220px]">
+                                  {item.siteName || item.subtitle || 'Production Site'}
+                                </span>
+                              </div>
 
-                          <div className="flex items-center gap-2">
-                            <button
-                              onClick={() => openEditProject(proj)}
-                              className="p-2 rounded-lg bg-white/5 hover:bg-white/15 text-slate-300 hover:text-white transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
-                              title="Edit project"
-                            >
-                              <Edit2 className="w-3.5 h-3.5" />
-                            </button>
-                            <button
-                              onClick={() => handleDeleteProject(proj.id, proj.title)}
-                              className="p-2 rounded-lg bg-red-500/10 hover:bg-red-500/20 text-red-400 transition-colors min-h-[36px] min-w-[36px] flex items-center justify-center"
-                              title="Delete project"
-                            >
-                              <Trash2 className="w-3.5 h-3.5" />
-                            </button>
+                              <h3 className="text-sm font-bold text-white group-hover:text-orange-300 transition-colors line-clamp-1">
+                                {item.title}
+                              </h3>
+
+                              <p className="text-xs text-slate-400 line-clamp-2 leading-relaxed">
+                                {item.desc || 'No description provided.'}
+                              </p>
+
+                              {/* Highlight Features Bullets (if available) */}
+                              {Array.isArray(item.features) && item.features.length > 0 && (
+                                <div className="pt-1 space-y-1">
+                                  {item.features.slice(0, 2).map((feat, fIdx) => (
+                                    <div key={fIdx} className="text-[10px] text-slate-400 flex items-center gap-1.5 truncate">
+                                      <span className="w-1 h-1 rounded-full bg-orange-400 shrink-0" />
+                                      <span className="truncate">{feat}</span>
+                                    </div>
+                                  ))}
+                                </div>
+                              )}
+                            </div>
+                          </div>
+
+                          {/* Card Footer: Tech Tags & Links */}
+                          <div className="p-4 pt-0 space-y-3">
+                            {Array.isArray(item.tech) && item.tech.length > 0 && (
+                              <div className="flex flex-wrap gap-1">
+                                {item.tech.slice(0, 4).map((techName, tIdx) => (
+                                  <span
+                                    key={tIdx}
+                                    className="px-2 py-0.5 bg-white/5 border border-white/5 rounded text-[10px] text-slate-400 font-medium"
+                                  >
+                                    {techName}
+                                  </span>
+                                ))}
+                                {item.tech.length > 4 && (
+                                  <span className="px-1.5 py-0.5 text-[10px] text-slate-500 font-mono">
+                                    +{item.tech.length - 4}
+                                  </span>
+                                )}
+                              </div>
+                            )}
+
+                            <div className="flex items-center gap-2 pt-1 border-t border-white/5">
+                              {demoUrl ? (
+                                <a
+                                  href={demoUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="flex-1 flex items-center justify-center gap-1.5 py-1.5 bg-white/5 hover:bg-orange-500/10 border border-white/5 hover:border-orange-500/30 rounded-xl text-[11px] font-semibold text-slate-300 hover:text-orange-300 transition-colors"
+                                >
+                                  <span>Live Demo</span>
+                                  <ExternalLink className="w-3 h-3" />
+                                </a>
+                              ) : null}
+
+                              {repoUrl ? (
+                                <a
+                                  href={repoUrl}
+                                  target="_blank"
+                                  rel="noopener noreferrer"
+                                  className="px-2.5 py-1.5 bg-white/5 hover:bg-white/15 border border-white/5 rounded-xl text-slate-300 hover:text-white transition-colors"
+                                  title="View GitHub Repository"
+                                >
+                                  <FaGithub className="w-3.5 h-3.5" />
+                                </a>
+                              ) : null}
+
+                              <button
+                                onClick={() => openEditProject(item)}
+                                className="px-3 py-1.5 bg-white/5 hover:bg-white/10 text-slate-300 hover:text-white rounded-xl text-[11px] font-medium transition-colors"
+                              >
+                                Edit
+                              </button>
+                            </div>
                           </div>
                         </div>
-                      </div>
-                    </div>
-                  ))}
-                </div>
+                      )
+                    })}
+                  </div>
+                )}
 
                 {/* Edit / Create Project Modal Form */}
                 {isEditingProject && (
-                  <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm">
-                    <div className="bg-[#181820] border border-white/10 rounded-2xl w-full max-w-2xl max-h-[92dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl">
-                      <div className="flex items-center justify-between mb-5 pb-3 border-b border-white/10">
-                        <h3 className="font-bold text-white text-sm sm:text-base truncate pr-2">
-                          {projectForm.title ? `Edit Project: ${projectForm.title}` : 'Create New Project'}
+                  <div className="fixed inset-0 z-50 flex items-center justify-center p-2 sm:p-4 bg-black/80 backdrop-blur-sm animate-in fade-in duration-200">
+                    <div className="bg-[#15151b] border border-white/10 rounded-2xl w-full max-w-xl max-h-[92dvh] overflow-y-auto p-4 sm:p-6 shadow-2xl space-y-5">
+                      <div className="flex items-center justify-between pb-3 border-b border-white/10">
+                        <h3 className="text-sm font-bold text-white flex items-center gap-2 truncate pr-2">
+                          <Layers className="w-4 h-4 text-orange-400 shrink-0" />
+                          <span>
+                            {projectForm.id && workItems.some((w) => w.id === projectForm.id)
+                              ? `Edit Work Project: ${projectForm.title || 'Untitled'}`
+                              : 'Add New Work Project'}
+                          </span>
                         </h3>
                         <button
                           onClick={() => setIsEditingProject(false)}
-                          className="text-slate-400 hover:text-white text-xl p-1"
+                          className="text-slate-400 hover:text-white text-base p-1 font-semibold"
                         >
-                          &times;
+                          ✕
                         </button>
                       </div>
 
                       <form onSubmit={handleSaveProject} className="space-y-4">
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        {/* Title & Domain */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-slate-300 mb-1">
                               Project Title *
@@ -1198,7 +1420,7 @@ export default function AdminPage() {
                               onChange={(e) =>
                                 setProjectForm({ ...projectForm, title: e.target.value })
                               }
-                              placeholder="e.g. Loan Origination System"
+                              placeholder="e.g. Crypto Tracker — Real-Time Price Tracker"
                               required
                               className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
                             />
@@ -1206,101 +1428,164 @@ export default function AdminPage() {
 
                           <div>
                             <label className="block text-xs font-medium text-slate-300 mb-1">
-                              Subtitle / Catchphrase
+                              Domain / Brand Name *
                             </label>
                             <input
                               type="text"
-                              value={projectForm.subtitle}
+                              value={projectForm.siteName}
                               onChange={(e) =>
-                                setProjectForm({ ...projectForm, subtitle: e.target.value })
+                                setProjectForm({ ...projectForm, siteName: e.target.value })
                               }
-                              placeholder="e.g. Enterprise Fintech Platform"
-                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
+                              placeholder="e.g. crypto-tracker.vercel.app"
+                              required
+                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60 font-mono text-xs"
                             />
                           </div>
                         </div>
 
-                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        {/* Category & Featured Toggle */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 items-center">
                           <div>
                             <label className="block text-xs font-medium text-slate-300 mb-1">
-                              Type Tag
+                              Industry Category *
                             </label>
-                            <input
-                              type="text"
-                              value={projectForm.type}
-                              onChange={(e) =>
-                                setProjectForm({ ...projectForm, type: e.target.value })
-                              }
-                              placeholder="e.g. Fintech SaaS / Web App"
-                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
-                            />
+                            <div className="space-y-1.5">
+                              <select
+                                value={projectForm.category}
+                                onChange={(e) =>
+                                  setProjectForm({ ...projectForm, category: e.target.value })
+                                }
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60"
+                              >
+                                <option value="Featured Work">Featured Work</option>
+                                <option value="Fintech">Fintech</option>
+                                <option value="E-Commerce">E-Commerce</option>
+                                <option value="Dental">Dental</option>
+                                <option value="Fashion">Fashion</option>
+                                <option value="Food & Beverage">Food &amp; Beverage</option>
+                                <option value="Hospitality">Hospitality</option>
+                                <option value="Agency">Agency</option>
+                                <option value="Jewelry">Jewelry</option>
+                                <option value="Real Estate">Real Estate</option>
+                                <option value="Learning Portal">Learning Portal</option>
+                                <option value="Web App">Web App</option>
+                              </select>
+                              <input
+                                type="text"
+                                value={projectForm.category}
+                                onChange={(e) =>
+                                  setProjectForm({ ...projectForm, category: e.target.value })
+                                }
+                                placeholder="Or type custom category..."
+                                className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-slate-300 focus:outline-none focus:border-orange-500/60"
+                              />
+                            </div>
                           </div>
 
-                          <div>
-                            <label className="block text-xs font-medium text-slate-300 mb-1">
-                              Display Order
+                          <div className="pt-2 sm:pt-4">
+                            <label className="flex items-center gap-2.5 p-3 rounded-xl bg-white/5 border border-white/5 cursor-pointer hover:bg-white/10 transition-colors">
+                              <input
+                                type="checkbox"
+                                checked={Boolean(projectForm.isWork)}
+                                onChange={(e) =>
+                                  setProjectForm({ ...projectForm, isWork: e.target.checked })
+                                }
+                                className="w-4 h-4 rounded text-orange-500 focus:ring-orange-500 border-white/20 bg-black/40"
+                              />
+                              <div>
+                                <span className="text-xs font-semibold text-white block">
+                                  Feature on Main Site
+                                </span>
+                                <span className="text-[10px] text-slate-400 block">
+                                  Highlight in the initial Projects section showcase
+                                </span>
+                              </div>
                             </label>
-                            <input
-                              type="number"
-                              value={projectForm.order}
-                              onChange={(e) =>
-                                setProjectForm({ ...projectForm, order: Number(e.target.value) })
-                              }
-                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
-                            />
                           </div>
+                        </div>
 
+                        {/* URLs: Live Demo & GitHub */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                           <div>
                             <label className="block text-xs font-medium text-slate-300 mb-1">
                               Live Demo URL
                             </label>
                             <input
-                              type="text"
+                              type="url"
                               value={projectForm.link}
                               onChange={(e) =>
-                                setProjectForm({ ...projectForm, link: e.target.value })
+                                setProjectForm({
+                                  ...projectForm,
+                                  link: e.target.value,
+                                  previewUrl: e.target.value,
+                                })
                               }
                               placeholder="https://..."
-                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
+                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-slate-300 mb-1">
+                              GitHub Repository URL
+                            </label>
+                            <input
+                              type="url"
+                              value={projectForm.githubUrl}
+                              onChange={(e) =>
+                                setProjectForm({ ...projectForm, githubUrl: e.target.value })
+                              }
+                              placeholder="https://github.com/..."
+                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60"
                             />
                           </div>
                         </div>
 
-                        {/* Image input with upload */}
+                        {/* Image URL & Upload */}
                         <div>
                           <label className="block text-xs font-medium text-slate-300 mb-1">
-                            Project Hero Image
+                            Thumbnail / Screenshot Image
                           </label>
-                          <div className="flex items-center gap-2">
+                          <div className="flex gap-2">
                             <input
                               type="text"
                               value={projectForm.image}
                               onChange={(e) =>
                                 setProjectForm({ ...projectForm, image: e.target.value })
                               }
-                              placeholder="/assets/projects/... or https://..."
-                              className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:border-orange-500/60"
+                              placeholder="/assets/projects/crypto-tracker.png or data:image..."
+                              className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60 font-mono"
                             />
-                            <label className="cursor-pointer p-2 bg-white/5 hover:bg-white/10 rounded-xl border border-white/10" title="Upload image file">
-                              <Upload className="w-4 h-4 text-orange-400" />
+                            <label className="cursor-pointer px-3 py-2 bg-white/10 hover:bg-white/20 text-white rounded-xl text-xs flex items-center gap-1.5 transition-colors shrink-0">
+                              <Upload className="w-3.5 h-3.5" />
+                              <span>Upload</span>
                               <input
                                 type="file"
                                 accept="image/*"
-                                className="hidden"
                                 onChange={(e) =>
                                   handleImageFileChange(e, (dataUrl) =>
                                     setProjectForm((prev) => ({ ...prev, image: dataUrl }))
                                   )
                                 }
+                                className="hidden"
                               />
                             </label>
                           </div>
+                          {projectForm.image && (
+                            <div className="mt-2 relative w-32 aspect-video rounded-lg overflow-hidden border border-white/10 bg-black/50">
+                              <img
+                                src={projectForm.image}
+                                alt="Preview"
+                                className="w-full h-full object-cover"
+                              />
+                            </div>
+                          )}
                         </div>
 
                         {/* Description */}
                         <div>
                           <label className="block text-xs font-medium text-slate-300 mb-1">
-                            Project Description *
+                            Description
                           </label>
                           <textarea
                             rows={3}
@@ -1308,79 +1593,197 @@ export default function AdminPage() {
                             onChange={(e) =>
                               setProjectForm({ ...projectForm, desc: e.target.value })
                             }
-                            required
-                            placeholder="Architected dynamic rule-driven workflows and dashboard analytics..."
-                            className="w-full bg-black/40 border border-white/10 rounded-xl p-3 text-sm text-white focus:outline-none focus:border-orange-500/60"
+                            placeholder="Provide details on architecture, UX flow, problem solved, or business impact..."
+                            className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60"
                           />
                         </div>
 
-                        {/* Tech Stack Tags */}
+                        {/* Feature Bullets */}
                         <div>
                           <label className="block text-xs font-medium text-slate-300 mb-1">
-                            Technologies Used
+                            Key Highlights / Features Bullets
                           </label>
-                          <div className="flex flex-wrap gap-1.5 mb-2">
-                            {projectForm.tech.map((t, ti) => (
-                              <span
-                                key={ti}
-                                className="flex items-center gap-1 text-xs px-2.5 py-0.5 rounded-full bg-white/5 border border-white/10 text-orange-300"
+                          <div className="flex gap-2 mb-2">
+                            <input
+                              type="text"
+                              value={projectForm.newFeature || ''}
+                              onChange={(e) =>
+                                setProjectForm({ ...projectForm, newFeature: e.target.value })
+                              }
+                              onKeyDown={(e) => {
+                                if (e.key === 'Enter') {
+                                  e.preventDefault()
+                                  if (projectForm.newFeature?.trim()) {
+                                    setProjectForm({
+                                      ...projectForm,
+                                      features: [
+                                        ...(projectForm.features || []),
+                                        projectForm.newFeature.trim(),
+                                      ],
+                                      newFeature: '',
+                                    })
+                                  }
+                                }
+                              }}
+                              placeholder="e.g. Real-time WebSocket market updates & interactive candles"
+                              className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500/60"
+                            />
+                            <button
+                              type="button"
+                              onClick={() => {
+                                if (projectForm.newFeature?.trim()) {
+                                  setProjectForm({
+                                    ...projectForm,
+                                    features: [
+                                      ...(projectForm.features || []),
+                                      projectForm.newFeature.trim(),
+                                    ],
+                                    newFeature: '',
+                                  })
+                                }
+                              }}
+                              className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-xl text-xs text-white font-medium transition-colors"
+                            >
+                              Add
+                            </button>
+                          </div>
+                          <div className="space-y-1.5">
+                            {(projectForm.features || []).map((feat, fIdx) => (
+                              <div
+                                key={fIdx}
+                                className="flex items-center justify-between gap-2 px-3 py-1.5 rounded-lg bg-white/5 border border-white/5 text-xs text-slate-300"
                               >
-                                {t}
+                                <span className="truncate">{feat}</span>
                                 <button
                                   type="button"
                                   onClick={() =>
                                     setProjectForm({
                                       ...projectForm,
-                                      tech: projectForm.tech.filter((_, i) => i !== ti),
+                                      features: projectForm.features.filter((_, i) => i !== fIdx),
                                     })
                                   }
-                                  className="hover:text-red-400"
+                                  className="text-slate-500 hover:text-red-400 p-0.5"
                                 >
-                                  &times;
+                                  ✕
                                 </button>
-                              </span>
+                              </div>
                             ))}
                           </div>
-                          <div className="flex gap-2">
+                        </div>
+
+                        {/* Tech Stack & Order */}
+                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                          <div>
+                            <label className="block text-xs font-medium text-slate-300 mb-1">
+                              Display Order Index
+                            </label>
                             <input
-                              type="text"
-                              value={projectForm.newTech}
+                              type="number"
+                              min={1}
+                              value={projectForm.order}
                               onChange={(e) =>
-                                setProjectForm({ ...projectForm, newTech: e.target.value })
+                                setProjectForm({
+                                  ...projectForm,
+                                  order: parseInt(e.target.value) || 1,
+                                })
                               }
-                              onKeyDown={(e) => {
-                                if (e.key === 'Enter') {
-                                  e.preventDefault()
-                                  if (projectForm.newTech.trim()) {
+                              className="w-full bg-black/40 border border-white/10 rounded-xl px-3 py-2 text-xs text-white focus:outline-none focus:border-orange-500/60"
+                            />
+                          </div>
+
+                          <div>
+                            <label className="block text-xs font-medium text-slate-300 mb-1">
+                              Tech Stack Tags
+                            </label>
+                            <div className="flex gap-2">
+                              <input
+                                type="text"
+                                value={projectForm.newTech || ''}
+                                onChange={(e) =>
+                                  setProjectForm({ ...projectForm, newTech: e.target.value })
+                                }
+                                onKeyDown={(e) => {
+                                  if (e.key === 'Enter') {
+                                    e.preventDefault()
+                                    if (projectForm.newTech?.trim()) {
+                                      setProjectForm({
+                                        ...projectForm,
+                                        tech: [...projectForm.tech, projectForm.newTech.trim()],
+                                        newTech: '',
+                                      })
+                                    }
+                                  }
+                                }}
+                                placeholder="Add tech & press Enter"
+                                className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500/60"
+                              />
+                              <button
+                                type="button"
+                                onClick={() => {
+                                  if (projectForm.newTech?.trim()) {
                                     setProjectForm({
                                       ...projectForm,
                                       tech: [...projectForm.tech, projectForm.newTech.trim()],
                                       newTech: '',
                                     })
                                   }
-                                }
-                              }}
-                              placeholder="Add tech (e.g. Next.js, Redux) & press Enter"
-                              className="flex-1 bg-black/40 border border-white/10 rounded-xl px-3 py-1.5 text-xs text-white focus:outline-none focus:border-orange-500/60"
-                            />
-                            <button
-                              type="button"
-                              onClick={() => {
-                                if (projectForm.newTech.trim()) {
-                                  setProjectForm({
-                                    ...projectForm,
-                                    tech: [...projectForm.tech, projectForm.newTech.trim()],
-                                    newTech: '',
-                                  })
-                                }
-                              }}
-                              className="px-3 py-1.5 bg-white/10 rounded-xl text-xs text-white font-medium"
-                            >
-                              Add
-                            </button>
+                                }}
+                                className="px-3 py-1.5 bg-white/10 hover:bg-white/20 rounded-xl text-xs text-white font-medium"
+                              >
+                                Add
+                              </button>
+                            </div>
                           </div>
                         </div>
 
+                        {/* Tech Stack Chips & Quick Add Suggestions */}
+                        <div className="space-y-2">
+                          <div className="flex flex-wrap gap-1.5">
+                            {(projectForm.tech || []).map((t, tIdx) => (
+                              <span
+                                key={tIdx}
+                                className="inline-flex items-center gap-1.5 px-2.5 py-1 rounded-md bg-white/5 border border-white/10 text-xs text-slate-300"
+                              >
+                                <span>{t}</span>
+                                <button
+                                  type="button"
+                                  onClick={() =>
+                                    setProjectForm({
+                                      ...projectForm,
+                                      tech: projectForm.tech.filter((_, i) => i !== tIdx),
+                                    })
+                                  }
+                                  className="text-slate-500 hover:text-red-400"
+                                >
+                                  ✕
+                                </button>
+                              </span>
+                            ))}
+                          </div>
+
+                          <div className="flex items-center gap-1.5 flex-wrap pt-1">
+                            <span className="text-[10px] text-slate-500">Quick add:</span>
+                            {['Next.js', 'React', 'Tailwind CSS', 'TypeScript', 'Three.js', 'REST API', 'Chart.js', 'Stripe', 'Node.js', 'GSAP']
+                              .filter((chip) => !(projectForm.tech || []).includes(chip))
+                              .map((chip) => (
+                                <button
+                                  key={chip}
+                                  type="button"
+                                  onClick={() =>
+                                    setProjectForm({
+                                      ...projectForm,
+                                      tech: [...(projectForm.tech || []), chip],
+                                    })
+                                  }
+                                  className="px-2 py-0.5 rounded bg-white/5 hover:bg-white/10 text-[10px] text-slate-400 hover:text-white transition-colors"
+                                >
+                                  + {chip}
+                                </button>
+                              ))}
+                          </div>
+                        </div>
+
+                        {/* Modal Action Buttons */}
                         <div className="flex items-center justify-end gap-3 pt-4 border-t border-white/10">
                           <button
                             type="button"
@@ -1392,10 +1795,10 @@ export default function AdminPage() {
                           <button
                             type="submit"
                             disabled={loadingAction}
-                            className="flex items-center gap-2 px-5 py-2 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl shadow-md shadow-orange-500/20"
+                            className="flex items-center gap-2 px-5 py-2 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 disabled:opacity-50"
                           >
                             <Save className="w-3.5 h-3.5" />
-                            <span>Save Project</span>
+                            <span>Save Work Project</span>
                           </button>
                         </div>
                       </form>
@@ -2375,8 +2778,8 @@ export default function AdminPage() {
               </div>
             )}
 
-            {/* TAB 6: TEMPLATES MANAGEMENT */}
-            {activeTab === 'templates' && (
+            {/* TAB 6 DEPRECATED: Unified into Tab 2 Work & Projects */}
+            {false && (
               <div className="space-y-6">
                 <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 bg-[#15151b] border border-white/5 rounded-2xl p-4 sm:p-6 shadow-xl">
                   <div>
@@ -2388,13 +2791,24 @@ export default function AdminPage() {
                       Add deployed full-stack templates across Fashion, Finance, Automotive, E-Commerce, etc.
                     </p>
                   </div>
-                  <button
-                    onClick={openNewTemplate}
-                    className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-colors w-full sm:w-auto"
-                  >
-                    <Plus className="w-3.5 h-3.5" />
-                    <span>Add New Template</span>
-                  </button>
+                  <div className="flex items-center gap-2.5 w-full sm:w-auto">
+                    <button
+                      onClick={handleSyncDefaultTemplates}
+                      disabled={loadingAction}
+                      className="flex items-center justify-center gap-2 px-3.5 py-2.5 sm:py-2 bg-white/10 hover:bg-white/15 text-slate-200 hover:text-white font-medium text-xs rounded-xl border border-white/10 transition-colors w-full sm:w-auto disabled:opacity-50"
+                      title="Sync all 21 default projects and templates into Firestore"
+                    >
+                      <RotateCcw className="w-3.5 h-3.5 text-orange-400" />
+                      <span>Sync All 21 Projects &amp; Templates</span>
+                    </button>
+                    <button
+                      onClick={openNewTemplate}
+                      className="flex items-center justify-center gap-2 px-4 py-2.5 sm:py-2 bg-orange-500 hover:bg-orange-400 text-black font-bold text-xs rounded-xl shadow-md shadow-orange-500/20 transition-colors w-full sm:w-auto"
+                    >
+                      <Plus className="w-3.5 h-3.5" />
+                      <span>Add New Template</span>
+                    </button>
+                  </div>
                 </div>
 
                 {/* Templates Grid List */}
@@ -2411,6 +2825,9 @@ export default function AdminPage() {
                             <img
                               src={t.image}
                               alt={t.title}
+                              onError={(e) => {
+                                e.currentTarget.src = '/assets/projects/crypto-tracker.png'
+                              }}
                               className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
                             />
                           ) : (

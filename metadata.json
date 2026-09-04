@@ -1,6 +1,6 @@
 {
   "name": "Cinematic Portfolio",
-  "description": "Fullstack cinematic portfolio with real-time Firebase-backed admin portal for managing About, Work, Services, Templates, Experience, and Certifications.",
+  "description": "Fullstack cinematic portfolio with real-time Firebase-backed admin portal for managing About, Projects, Services, Experience, and Certifications.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -23,6 +23,7 @@ import {
   deleteService,
   saveTemplate,
   deleteTemplate,
+  syncDefaultTemplates,
   seedAllDefaultData,
 } from '@/lib/portfolioService'
 
@@ -54,6 +55,7 @@ const PortfolioContext = createContext({
   removeServ: async () => {},
   saveTempl: async () => {},
   removeTempl: async () => {},
+  syncTemplates: async () => {},
   resetToDefaults: async () => {},
 })
 
@@ -169,6 +171,7 @@ export function PortfolioProvider({ children }) {
         removeServ: deleteService,
         saveTempl: saveTemplate,
         removeTempl: deleteTemplate,
+        syncTemplates: syncDefaultTemplates,
         resetToDefaults: seedAllDefaultData,
       }}
     >

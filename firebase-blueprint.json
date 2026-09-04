@@ -45,13 +45,29 @@
           "type": "string",
           "description": "Project subtitle or tagline"
         },
+        "siteName": {
+          "type": "string",
+          "description": "Live website / brand name"
+        },
         "type": {
           "type": "string",
           "description": "Category or type of project (e.g. Web App, Clone Project)"
         },
+        "category": {
+          "type": "string",
+          "description": "Category name"
+        },
         "link": {
           "type": "string",
           "description": "Live demo URL or repository link"
+        },
+        "previewUrl": {
+          "type": "string",
+          "description": "Live preview URL"
+        },
+        "githubUrl": {
+          "type": "string",
+          "description": "Source code repository URL"
         },
         "image": {
           "type": "string",
@@ -61,6 +77,10 @@
           "type": "array",
           "description": "List of technologies used"
         },
+        "features": {
+          "type": "array",
+          "description": "Key feature highlights list"
+        },
         "desc": {
           "type": "string",
           "description": "Project description"
@@ -68,6 +88,10 @@
         "order": {
           "type": "number",
           "description": "Display order index"
+        },
+        "isWork": {
+          "type": "boolean",
+          "description": "Whether item is featured work"
         }
       },
       "required": ["title", "link", "image", "order"]
@@ -229,6 +253,14 @@
           "type": "string",
           "description": "Live deployment URL"
         },
+        "previewUrl": {
+          "type": "string",
+          "description": "Live preview URL"
+        },
+        "githubUrl": {
+          "type": "string",
+          "description": "Source code repository URL"
+        },
         "image": {
           "type": "string",
           "description": "Hero section screenshot or preview image URL"
@@ -237,6 +269,10 @@
           "type": "string",
           "description": "Detailed description of the template architecture"
         },
+        "features": {
+          "type": "array",
+          "description": "Key highlights / feature bullets"
+        },
         "tech": {
           "type": "array",
           "description": "List of technologies utilized"
@@ -244,6 +280,10 @@
         "order": {
           "type": "number",
           "description": "Display order index"
+        },
+        "isWork": {
+          "type": "boolean",
+          "description": "Whether item is featured work"
         }
       },
       "required": ["title", "siteName", "category", "link", "image", "order"]

@@ -84,6 +84,9 @@ function easeInOut(t) {
 }
 
 function handleViewProjects() {
+  if (typeof window !== 'undefined') {
+    window.dispatchEvent(new CustomEvent('switch-services-tab', { detail: { tab: 'templates' } }))
+  }
   const scroller = document.querySelector('main')
   if (scroller) gsap.to(scroller, { scrollTop: 3 * window.innerHeight, duration: 1.0, ease: 'power3.inOut' })
 }

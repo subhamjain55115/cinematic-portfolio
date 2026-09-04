@@ -14,14 +14,14 @@
   },
   "location": {
     "based": "Jaipur, India",
-    "availability": "Jaipur / Remote"
+    "availability": "Pan India"
   },
   "available": true,
-  "bio": "Frontend Developer with 5+ years of experience designing and building scalable fintech and enterprise-grade applications. Currently leading frontend architecture for a configurable Loan Origination System (LOS) and Loan Management System (LMS) SaaS platform, architecting modular multi-tenant systems with React and Redux Toolkit. Experienced across underwriting workflows, Agentic AI integrations, CRM automation, and component-driven design systems for banking and lending products.",
+  "bio": "Frontend Developer with 4+ years of experience designing and building scalable fintech and enterprise-grade applications. Currently leading frontend architecture for a configurable Loan Origination System (LOS) and Loan Management System (LMS) SaaS platform, architecting modular multi-tenant systems with React and Redux Toolkit. Experienced across underwriting workflows, Agentic AI integrations, CRM automation, and component-driven design systems for banking and lending products.",
   "stats": [
-    { "value": "5+", "label": "Years Experience" },
+    { "value": "4+", "label": "Years Experience" },
     { "value": "150+", "label": "Reusable Components" },
-    { "value": "5", "label": "Companies" }
+    { "value": "4", "label": "Companies" }
   ],
   "skills": [
     "React.js",
@@ -106,56 +106,6 @@
     }
   ],
   "projects": [
-    {
-      "id": 1,
-      "title": "Crypto Tracker",
-      "subtitle": "Real-Time Crypto Price Tracker",
-      "type": "Web App",
-      "link": "https://crypto-tracker-navy-ten.vercel.app/",
-      "image": "/assets/projects/crypto-tracker.png",
-      "tech": ["React", "REST API", "Data Visualization"],
-      "desc": "A live cryptocurrency price tracker with real-time market data, search, and price charts."
-    },
-    {
-      "id": 4,
-      "title": "3D Portfolio",
-      "subtitle": "Interactive Three.js Portfolio",
-      "type": "Portfolio",
-      "link": "https://my-protfolio-react-three.vercel.app/",
-      "image": "/assets/projects/three-portfolio.jpeg",
-      "tech": ["React", "Three.js", "React Three Fiber"],
-      "desc": "An earlier interactive portfolio experiment combining React with Three.js for 3D scenes and motion."
-    },
-    {
-      "id": 6,
-      "title": "Blinkit Clone",
-      "subtitle": "Quick-Commerce UI Clone",
-      "type": "Clone Project",
-      "link": "https://subham7769.github.io/Blinkit-clone/",
-      "image": "/assets/projects/blinkit-clone.png",
-      "tech": ["JavaScript", "HTML5", "CSS3"],
-      "desc": "A front-end clone of the Blinkit quick-commerce experience, focused on catalog browsing and cart UI."
-    },
-    {
-      "id": 7,
-      "title": "AccioJob Portal",
-      "subtitle": "Learning Portal UI",
-      "type": "Web App",
-      "link": "https://subham7769.github.io/Acciojob-New-Portal/",
-      "image": "/assets/projects/acciojob-portal.png",
-      "tech": ["JavaScript", "HTML5", "CSS3"],
-      "desc": "A redesigned learning-portal interface built during the AccioJob frontend apprenticeship."
-    },
-    {
-      "id": 9,
-      "title": "Food Delivery",
-      "subtitle": "Food Delivery App UI",
-      "type": "Clone Project",
-      "link": "https://subham7769.github.io/Food-delivery/",
-      "image": "/assets/projects/food-delivery.png",
-      "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
-      "desc": "A food-delivery app interface covering menu browsing, cart, and checkout UI flows."
-    }
   ],
   "certifications": [
     { "id": 1, "title": "Agile with Atlassian Jira", "issuer": "Atlassian University", "year": "2024", "date": "2024-01-01", "image": "/assets/Certificate/cert-atlassian-agile-jira.png" },
@@ -317,70 +267,240 @@
   ],
   "templates": [
     {
-      "id": "1",
-      "title": "Aura Couture",
-      "siteName": "Aura Fashion & Luxury",
-      "category": "Fashion",
+      "title": "Crypto Tracker — Real-Time Crypto Price Tracker",
+      "siteName": "crypto-tracker-navy-ten.vercel.app",
+      "category": "Featured Work",
+      "desc": "A live cryptocurrency price tracker with real-time market data, interactive price trend charts, search, and portfolio tracking.",
       "link": "https://crypto-tracker-navy-ten.vercel.app/",
       "image": "/assets/projects/crypto-tracker.png",
-      "desc": "High-end luxury apparel and editorial lookbook e-commerce experience with interactive catalog browsing, fluid size configurator, and instant cart.",
-      "tech": ["Next.js", "Tailwind CSS", "Motion", "Stripe API"],
-      "order": 1
+      "tech": ["React", "REST API", "Chart.js", "Data Visualization"],
+      "id": "work-1-crypto-tracker",
+      "order": 29,
+      "isWork": true
     },
     {
-      "id": "2",
-      "title": "Apex Capital",
-      "siteName": "Apex Fintech Dashboard",
-      "category": "Finance",
-      "link": "https://crypto-tracker-navy-ten.vercel.app/",
-      "image": "/assets/projects/crypto-tracker.png",
-      "desc": "Institutional-grade wealth management and loan origination dashboard featuring real-time risk assessment, credit scoring meters, and live charts.",
-      "tech": ["React", "Redux Toolkit", "Recharts", "Fintech LOS/LMS"],
-      "order": 2
-    },
-    {
-      "id": "3",
-      "title": "Velocity Turbo",
-      "siteName": "Velocity Supercars",
-      "category": "Automotive",
+      "title": "3D Interactive Portfolio — Three.js Experience",
+      "siteName": "my-protfolio-react-three.vercel.app",
+      "category": "Featured Work",
+      "desc": "Interactive portfolio experience combining React with Three.js and React Three Fiber for 3D scenes, custom shaders, and spatial navigation.",
       "link": "https://my-protfolio-react-three.vercel.app/",
       "image": "/assets/projects/three-portfolio.jpeg",
-      "desc": "Interactive supercar showroom and 3D vehicle configurator with WebGL lighting, performance spec comparison, and VIP test-drive booking.",
-      "tech": ["Three.js", "React Three Fiber", "WebGL", "GSAP"],
-      "order": 3
+      "tech": ["React", "Three.js", "React Three Fiber", "GLSL Shaders"],
+      "id": "work-4-three-portfolio",
+      "order": 28,
+      "isWork": true
     },
     {
-      "id": "4",
-      "title": "BlinkMart Quick-Commerce",
-      "siteName": "BlinkMart Delivery",
-      "category": "E-Commerce",
+      "title": "Blinkit Quick-Commerce Clone",
+      "siteName": "subham7769.github.io/Blinkit-clone",
+      "category": "Featured Work",
+      "desc": "High-fidelity quick-commerce clone replicating the Blinkit catalog, category filtering, real-time cart management, and instant delivery UI.",
       "link": "https://subham7769.github.io/Blinkit-clone/",
       "image": "/assets/projects/blinkit-clone.png",
-      "desc": "Ultra-fast grocery and essentials delivery platform UI with instant aisle filtering, live cart recalculation, and category carousels.",
-      "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
-      "order": 4
+      "tech": ["JavaScript", "HTML5", "CSS3", "Cart State"],
+      "id": "work-6-blinkit-clone",
+      "order": 27,
+      "isWork": true
     },
     {
-      "id": "5",
-      "title": "Pulse Eats",
-      "siteName": "Pulse Food Delivery",
-      "category": "Food & Hospitality",
-      "link": "https://subham7769.github.io/Food-delivery/",
-      "image": "/assets/projects/food-delivery.png",
-      "desc": "Multi-vendor food discovery and restaurant ordering portal with interactive menu modifiers, dietary filters, and visual checkout.",
-      "tech": ["JavaScript", "Responsive Web", "CSS Grid", "REST API"],
-      "order": 5
-    },
-    {
-      "id": "6",
-      "title": "Zenith EduPortal",
-      "siteName": "Zenith Learning Cloud",
-      "category": "EdTech & SaaS",
+      "title": "AccioJob Learning Portal — Student Platform",
+      "siteName": "subham7769.github.io/Acciojob-New-Portal",
+      "category": "Featured Work",
+      "desc": "Redesigned modern student dashboard with modular curriculum navigation, interactive assignment submissions, and progress tracking.",
       "link": "https://subham7769.github.io/Acciojob-New-Portal/",
       "image": "/assets/projects/acciojob-portal.png",
-      "desc": "Enterprise student learning hub and curriculum portal featuring module progression tracking, code assignments, and mentor office hours.",
-      "tech": ["React", "CSS Modules", "JavaScript", "REST APIs"],
-      "order": 6
+      "tech": ["JavaScript", "HTML5", "CSS3", "DOM API"],
+      "id": "work-7-acciojob-portal",
+      "order": 26,
+      "isWork": true
+    },
+    {
+      "title": "Food Delivery App — Ordering & Checkout UI",
+      "siteName": "subham7769.github.io/Food-delivery",
+      "category": "Featured Work",
+      "desc": "End-to-end food ordering web application featuring restaurant discovery, menu selection, dish customization, and seamless checkout flows.",
+      "link": "https://subham7769.github.io/Food-delivery/",
+      "image": "/assets/projects/food-delivery.png",
+      "tech": ["JavaScript", "HTML5", "CSS3", "Responsive UI"],
+      "id": "work-9-food-delivery",
+      "order": 25,
+      "isWork": true
+    },
+    {
+      "title": "DentaPremium — Luxury Private Dental Clinic",
+      "siteName": "DentaPremium",
+      "category": "Dental",
+      "desc": "Luxury private dental clinic site with a dark-slate design system, Lenis smooth scrolling synced to GSAP ScrollTrigger, specialist and clinic-tour showcases, and a centralized booking CTA gateway.",
+      "link": "https://dental-denta-premium.vercel.app/",
+      "image": "/assets/projects/dental-denta-premium.png",
+      "tech": ["React 19", "Vite", "Tailwind CSS", "GSAP", "Lenis"],
+      "id": "1788517942862",
+      "order": 9
+    },
+    {
+      "title": "Immemorial — Fashion Agency",
+      "siteName": "Immemorial",
+      "category": "Fashion",
+      "desc": "Fashion agency website with home, services, portfolio, and contact sections, GSAP-driven animations, and a filterable portfolio grid by category.",
+      "link": "https://fashion-immemorial-store.vercel.app/",
+      "image": "/assets/projects/fashion-immemorial-store.png",
+      "tech": ["React", "React Router", "GSAP", "Tailwind CSS"],
+      "id": "1788517942877",
+      "order": 10
+    },
+    {
+      "title": "Wibe Studio — Fashion Studio",
+      "siteName": "Wibe Studio",
+      "category": "Fashion",
+      "desc": "Fashion studio landing page rebuilt on React 19 and Vite, with Locomotive Scroll smooth-scrolling, Framer Motion transitions, and GSAP-driven section reveals.",
+      "link": "https://fashion-wibe-studio.vercel.app/",
+      "image": "/assets/projects/fashion-wibe-studio.png",
+      "tech": ["React 19", "Vite", "Framer Motion", "GSAP", "Locomotive Scroll", "styled-components"],
+      "id": "1788517942889",
+      "order": 11
+    },
+    {
+      "title": "Dental Clinic Web App",
+      "siteName": "Dental Clinic",
+      "category": "Dental",
+      "desc": "Full-stack dental clinic booking app with patient registration and login, appointment scheduling by date/dentist, appointment self-management, and a chat-with-doctor feature.",
+      "link": "https://dental-clinic-ganraj.vercel.app/",
+      "image": "/assets/projects/dental-clinic-ganraj.png",
+      "tech": ["React 18", "Material UI", "Bootstrap", "Express", "MongoDB", "JWT"],
+      "id": "1788517942901",
+      "order": 12
+    },
+    {
+      "title": "WebGi Jewelry Landing Page",
+      "siteName": "Jewelry 3D",
+      "category": "Jewelry",
+      "desc": "Scrollytelling 3D jewelry landing page built on the WebGi engine (a modified Three.js), with GSAP ScrollTrigger driving cinematic camera and product reveal sequences.",
+      "link": "https://jewelry-webgi-3d.vercel.app/",
+      "image": "/assets/projects/jewelry-webgi-3d.png",
+      "tech": ["TypeScript", "Three.js (WebGi)", "GSAP", "ScrollTrigger", "Parcel"],
+      "id": "1788517942912",
+      "order": 13
+    },
+    {
+      "title": "Twogood Co — Food & Beverage",
+      "siteName": "Twogood",
+      "category": "Food & Beverage",
+      "desc": "Responsive food and beverage brand site with GSAP and ScrollTrigger scroll animations and Locomotive Scroll for a smooth, inertia-based scrolling experience.",
+      "link": "https://food-beverage-two-good-co.vercel.app/",
+      "image": "/assets/projects/food-beverage-two-good-co.png",
+      "tech": ["HTML", "CSS", "JavaScript", "GSAP", "ScrollTrigger", "Locomotive Scroll"],
+      "id": "1788517942924",
+      "order": 14
+    },
+    {
+      "title": "Dentalist — Dental Clinic Landing Page",
+      "siteName": "Dentalist",
+      "category": "Dental",
+      "desc": "Fully responsive dental clinic landing page with a clean service showcase, built with plain HTML, CSS, Tailwind CSS, and JavaScript.",
+      "link": "https://dental-dentalist.vercel.app/",
+      "image": "/assets/projects/dental-dentalist.png",
+      "tech": ["HTML", "CSS", "Tailwind CSS", "JavaScript"],
+      "id": "1788517942936",
+      "order": 15
+    },
+    {
+      "title": "Hotel Odisej — Hospitality Showcase",
+      "siteName": "Hotel Odisej",
+      "category": "Hospitality",
+      "desc": "High-end hotel showcase across 12 scroll-driven sections, with GSAP + ScrollTrigger synced to Locomotive Scroll, character-level text reveals, a custom cursor, and a Swiper.js image carousel.",
+      "link": "https://hospitality-hotel-odisej.vercel.app/",
+      "image": "/assets/projects/hospitality-hotel-odisej.png",
+      "tech": ["HTML", "CSS", "JavaScript", "GSAP", "ScrollTrigger", "Locomotive Scroll", "Swiper.js"],
+      "id": "1788517942948",
+      "order": 16
+    },
+    {
+      "title": "CoffeeHubb — Café Showcase",
+      "siteName": "CoffeeHubb",
+      "category": "Food & Beverage",
+      "desc": "Café brand showcase with GSAP animations, a Swiper.js image slider, EmailJS-powered contact form, and Locomotive Scroll smooth scrolling.",
+      "link": "https://food-beverage-coffee-hub.vercel.app/",
+      "image": "/assets/projects/food-beverage-coffee-hub.png",
+      "tech": ["HTML", "CSS", "JavaScript", "GSAP", "Swiper.js", "EmailJS", "Locomotive Scroll"],
+      "id": "1788517942960",
+      "order": 17
+    },
+    {
+      "title": "Café Velvet — Luxury Café",
+      "siteName": "Café Velvet",
+      "category": "Food & Beverage",
+      "desc": "Premium animated café site with cinematic video-backed hero and about sections, a custom animated cursor, Lenis smooth scrolling, and glassmorphism-inspired UI.",
+      "link": "https://food-beverage-cafe-velvet.vercel.app/",
+      "image": "/assets/projects/food-beverage-cafe-velvet.png",
+      "tech": ["React", "Vite", "GSAP", "Lenis"],
+      "id": "1788517942971",
+      "order": 18
+    },
+    {
+      "title": "Coffee & Joy – Zenbrew Landing Page",
+      "siteName": "Coffee & Joy",
+      "category": "Food & Beverage",
+      "desc": "Coffee shop landing page on the Next.js App Router with a video hero, GSAP-pinned horizontal scroll story, Framer Motion nav animation, Locomotive Scroll parallax, and a Swiper testimonials carousel.",
+      "link": "https://food-beverage-coffeeshop-landing.vercel.app/",
+      "image": "/assets/projects/food-beverage-coffeeshop-landing.png",
+      "tech": ["Next.js 15", "React 18", "TypeScript", "Tailwind CSS", "Framer Motion", "GSAP", "Locomotive Scroll", "Swiper"],
+      "id": "1788517942983",
+      "order": 19
+    },
+    {
+      "title": "Gentlerain.ai Clone — Agency Studio",
+      "siteName": "Gentlerain",
+      "category": "Agency",
+      "desc": "Awwwards-style agency site clone with a custom HTML5 Canvas water-ripple effect, GSAP and Lenis-driven scroll animations, and interactive UI/UX built entirely in vanilla JS.",
+      "link": "https://agency-studio-gentlerain-ai.vercel.app/",
+      "image": "/assets/projects/agency-studio-gentlerain-ai.png",
+      "tech": ["HTML5", "CSS3", "JavaScript", "GSAP", "Lenis", "ScrollTrigger", "Canvas API"],
+      "id": "1788517942995",
+      "order": 20
+    },
+    {
+      "title": "Lazarev — Agency Studio",
+      "siteName": "Lazarev",
+      "category": "Agency",
+      "desc": "Agency studio site clone recreating an award-winning design with GSAP and Locomotive Scroll-driven interactions across a responsive, Bootstrap-assisted layout.",
+      "link": "https://agency-studio-lazarev.vercel.app/",
+      "image": "/assets/projects/agency-studio-lazarev.png",
+      "tech": ["HTML", "CSS", "JavaScript", "GSAP", "Locomotive Scroll", "Bootstrap"],
+      "id": "1788517943007",
+      "order": 21
+    },
+    {
+      "title": "Redsofa — Agency Studio",
+      "siteName": "Redsofa",
+      "category": "Agency",
+      "desc": "Minimalist agency studio clone featuring a draggable Swiper.js project carousel, a mouse-parallax showcase effect, and GSAP + ScrollTrigger + Locomotive Scroll animations.",
+      "link": "https://agency-studio-redsofa.vercel.app/",
+      "image": "/assets/projects/agency-studio-redsofa.png",
+      "tech": ["HTML", "CSS", "JavaScript", "GSAP", "ScrollTrigger", "Locomotive Scroll", "Swiper.js"],
+      "id": "1788517943019",
+      "order": 22
+    },
+    {
+      "title": "Real Estate Digital Twin — Agency Landing Page",
+      "siteName": "Real Estate Agency",
+      "category": "Real Estate",
+      "desc": "Single-page real estate landing experience with pinned canvas frame-sequence animations, GSAP ScrollTrigger synced to Locomotive Scroll, and character-level text reveals.",
+      "link": "https://real-estate-agency-psi.vercel.app/",
+      "image": "/assets/projects/real-estate-agency-psi.png",
+      "tech": ["HTML5", "CSS3", "JavaScript", "GSAP", "ScrollTrigger", "Locomotive Scroll"],
+      "id": "1788517943031",
+      "order": 23
+    },
+    {
+      "title": "GSAP Awwwards Agency Portfolio",
+      "siteName": "Awwwards Portfolio",
+      "category": "Agency",
+      "desc": "Awwwards Site-of-the-Day–style portfolio with parallax storytelling, clip-path reveals, pinned video sections, and GSAP ScrollTrigger/ScrollSmoother timelines on React 19 and Tailwind CSS v4.",
+      "link": "https://agency-portfolio-gsap-awwwards-webs.vercel.app/",
+      "image": "/assets/projects/agency-portfolio-gsap-awwwards-webs.png",
+      "tech": ["React 19", "Tailwind CSS v4", "GSAP", "ScrollTrigger", "ScrollSmoother"],
+      "id": "1788517943042",
+      "order": 24
     }
   ]
 }
