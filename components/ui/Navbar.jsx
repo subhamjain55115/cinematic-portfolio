@@ -11,6 +11,7 @@ import {
 import { gsap } from '@/lib/gsap'
 import profile from '@/data/profile.json'
 import { usePortfolio } from '@/context/PortfolioContext'
+import ThemeSwitcher from '@/components/ui/ThemeSwitcher'
 import styles from '@/styles/ui/Navbar.module.css'
 import { FaBars, FaTimes } from 'react-icons/fa'
 
@@ -121,6 +122,8 @@ export default function Navbar() {
         </NavigationMenu>
 
         <div className="flex items-center gap-2">
+          <ThemeSwitcher variant="navbar" />
+
           <Link
             href="/admin"
             className="text-xs px-3 py-1.5 rounded-full border border-orange-400/40 text-orange-500 hover:bg-orange-500/10 transition-colors font-medium"
@@ -180,6 +183,9 @@ export default function Navbar() {
           >
             Admin Portal
           </Link>
+
+          <ThemeSwitcher variant="mobile" />
+
           <a
             href={`mailto:${profile.email}`}
             className={styles.mobileMailLink}

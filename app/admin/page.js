@@ -174,17 +174,56 @@ export default function AdminPage() {
     setTimeout(() => setToast(null), 3500)
   }
 
-  // Handle Image Upload Helper (converts to base64 for instant Firestore storage)
+  // Handle Image Upload Helper (compresses and converts to base64 for reliable Firestore document storage)
   const handleImageFileChange = (e, callback) => {
     const file = e.target.files?.[0]
     if (!file) return
-    if (file.size > 2 * 1024 * 1024) {
-      showToast('Image size should be under 2MB', 'error')
+    if (!file.type.startsWith('image/')) {
+      showToast('Please select a valid image file', 'error')
       return
     }
     const reader = new FileReader()
-    reader.onload = () => {
-      callback(reader.result)
+    reader.onload = (event) => {
+      const img = new window.Image()
+      img.onload = () => {
+        const canvas = document.createElement('canvas')
+        const MAX_WIDTH = 1280
+        const MAX_HEIGHT = 1280
+        let width = img.width
+        let height = img.height
+
+        if (width > height) {
+          if (width > MAX_WIDTH) {
+            height = Math.round((height * MAX_WIDTH) / width)
+            width = MAX_WIDTH
+          }
+        } else {
+          if (height > MAX_HEIGHT) {
+            width = Math.round((width * MAX_HEIGHT) / height)
+            height = MAX_HEIGHT
+          }
+        }
+
+        canvas.width = width
+        canvas.height = height
+        const ctx = canvas.getContext('2d')
+        ctx.drawImage(img, 0, 0, width, height)
+
+        // Try WebP first for optimal compression, fallback to JPEG
+        let dataUrl = canvas.toDataURL('image/webp', 0.82)
+        if (!dataUrl.startsWith('data:image/webp')) {
+          dataUrl = canvas.toDataURL('image/jpeg', 0.82)
+        }
+        callback(dataUrl)
+        showToast('Image uploaded and optimized successfully')
+      }
+      img.onerror = () => {
+        callback(event.target.result)
+      }
+      img.src = event.target.result
+    }
+    reader.onerror = () => {
+      showToast('Failed to read image file', 'error')
     }
     reader.readAsDataURL(file)
   }

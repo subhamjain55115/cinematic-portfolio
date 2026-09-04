@@ -4,6 +4,8 @@ import Cursor from "@/components/ui/Cursor";
 import WhatsAppButton from "@/components/ui/WhatsAppButton";
 import { SITE_URL } from '@/lib/siteConfig';
 import { PortfolioProvider } from "@/context/PortfolioContext";
+import { ThemeProvider } from "@/context/ThemeContext";
+import ThemeSwitcher from "@/components/ui/ThemeSwitcher";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -215,9 +217,12 @@ export default function RootLayout({ children }) {
           }}
         />
         <PortfolioProvider>
-          <Cursor />
-          <WhatsAppButton />
-          {children}
+          <ThemeProvider>
+            <Cursor />
+            <WhatsAppButton />
+            <ThemeSwitcher variant="floating" />
+            {children}
+          </ThemeProvider>
         </PortfolioProvider>
       </body>
     </html>

@@ -1,8 +1,8 @@
 @import "tailwindcss";
 
 /* ─── Brand tokens ─────────────────────────────────────── */
-:root {
-  /* Hero gradient - exact reference image */
+:root, [data-theme="amber"] {
+  /* Hero gradient - Sunset Amber (Default) */
   --hero-start: #f8d5b0;
   --hero-mid:   #f5954a;
   --hero-end:   #e85500;
@@ -10,6 +10,7 @@
   /* Accent */
   --accent:       #f7931e;
   --accent-hover: #e07b10;
+  --accent-glow:  rgba(247, 147, 30, 0.4);
 
   /* Text */
   --text-primary: #1a0800;
@@ -45,6 +46,81 @@
   --primary-foreground: var(--surface-white);
   --ring:         var(--accent);
   --radius:       9999px;
+}
+
+/* Cyber Cyan Theme */
+[data-theme="cyber"] {
+  --hero-start: #1e293b;
+  --hero-mid:   #0f766e;
+  --hero-end:   #06b6d4;
+
+  --accent:       #06b6d4;
+  --accent-hover: #0891b2;
+  --accent-glow:  rgba(6, 182, 212, 0.4);
+
+  --text-primary: #042f2e;
+  --text-muted:   #134e4a;
+  --ring:         var(--accent);
+}
+
+/* Emerald Matrix Theme */
+[data-theme="emerald"] {
+  --hero-start: #1c3d2e;
+  --hero-mid:   #059669;
+  --hero-end:   #10b981;
+
+  --accent:       #10b981;
+  --accent-hover: #059669;
+  --accent-glow:  rgba(16, 185, 129, 0.4);
+
+  --text-primary: #022c22;
+  --text-muted:   #064e3b;
+  --ring:         var(--accent);
+}
+
+/* Crimson Rose Theme */
+[data-theme="crimson"] {
+  --hero-start: #4c0519;
+  --hero-mid:   #be123c;
+  --hero-end:   #f43f5e;
+
+  --accent:       #f43f5e;
+  --accent-hover: #e11d48;
+  --accent-glow:  rgba(244, 63, 94, 0.4);
+
+  --text-primary: #4c0519;
+  --text-muted:   #881337;
+  --ring:         var(--accent);
+}
+
+/* Electric Violet Theme */
+[data-theme="violet"] {
+  --hero-start: #311042;
+  --hero-mid:   #7e22ce;
+  --hero-end:   #a855f7;
+
+  --accent:       #a855f7;
+  --accent-hover: #9333ea;
+  --accent-glow:  rgba(168, 85, 247, 0.4);
+
+  --text-primary: #2e1065;
+  --text-muted:   #581c87;
+  --ring:         var(--accent);
+}
+
+/* Obsidian Mono Theme */
+[data-theme="obsidian"] {
+  --hero-start: #3f3f46;
+  --hero-mid:   #27272a;
+  --hero-end:   #09090b;
+
+  --accent:       #e4e4e7;
+  --accent-hover: #ffffff;
+  --accent-glow:  rgba(228, 228, 231, 0.4);
+
+  --text-primary: #18181b;
+  --text-muted:   #3f3f46;
+  --ring:         var(--accent);
 }
 
 @theme inline {
