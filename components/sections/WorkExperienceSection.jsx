@@ -156,7 +156,7 @@ export default function WorkExperienceSection() {
                   </div>
                   <h2 className={styles.company}>{exp.company}</h2>
                   <p  className={styles.role}>{exp.role}</p>
-                  {exp.desc && <p className="text-xs text-orange-200/80 mb-2">{exp.desc}</p>}
+                  {exp.desc && <p className={styles.desc}>{exp.desc}</p>}
                   {exp.bullets && exp.bullets.length > 0 && (
                     <ul
                       ref={el => { bulletListRefs.current[i] = el }}

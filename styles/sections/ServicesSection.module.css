@@ -208,9 +208,9 @@
 }
 
 .serviceCard:hover {
-  border-color: rgba(249, 115, 22, 0.4);
-  transform: translateY(-3px);
-  box-shadow: 0 12px 30px rgba(0, 0, 0, 0.5), 0 0 20px rgba(249, 115, 22, 0.08);
+  border-color: color-mix(in srgb, var(--accent, #f97316) 60%, transparent);
+  transform: translateY(-4px);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 24px color-mix(in srgb, var(--accent, #f97316) 20%, transparent);
 }
 
 .cardTop {
@@ -224,12 +224,12 @@
   width: 44px;
   height: 44px;
   border-radius: 10px;
-  background: rgba(249, 115, 22, 0.1);
-  border: 1px solid rgba(249, 115, 22, 0.25);
+  background: color-mix(in srgb, var(--accent, #f97316) 8%, rgba(255, 255, 255, 0.04));
+  border: 1px solid color-mix(in srgb, var(--accent, #f97316) 20%, rgba(255, 255, 255, 0.08));
+  color: color-mix(in srgb, var(--accent, #f97316) 35%, rgba(255, 255, 255, 0.85));
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--accent, #f97316);
   font-size: 1.25rem;
   transition: all 0.3s ease;
 }
@@ -338,9 +338,9 @@
   gap: 0.35rem;
   font-size: 0.75rem;
   font-weight: 700;
-  color: var(--accent, #f97316);
   text-decoration: none;
-  background: rgba(249, 115, 22, 0.08);
+  background: var(--accent, #f97316);
+  color: #080808;
   border: 1px solid rgba(249, 115, 22, 0.2);
   padding: 0.35rem 0.75rem;
   border-radius: 6px;
@@ -349,8 +349,9 @@
 }
 
 .inquireBtn:hover {
-  background: var(--accent, #f97316);
-  color: #080808;
+  background: #ffffff;
+  color: #000000;
+  transform: translateX(2px);
 }
 
 /* ── Category Filter Bar for Templates ──────────── */
@@ -661,22 +662,19 @@
   gap: 0.5rem;
   padding: 0.55rem 1.4rem;
   border-radius: 9999px;
-  background: rgba(249, 115, 22, 0.08);
-  border: 1px solid rgba(249, 115, 22, 0.3);
+  background: color-mix(in srgb, var(--accent, #f97316) 10%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #f97316) 35%, transparent);
   color: var(--accent, #f97316);
   font-size: 0.82rem;
   font-weight: 600;
   cursor: pointer;
   transition: all 0.25s ease;
-  user-select: none;
 }
 
 .nextSectionBtn:hover {
-  background: var(--accent, #f97316);
-  color: #080808;
-  border-color: var(--accent, #f97316);
-  transform: translateY(2px);
-  box-shadow: 0 4px 16px rgba(249, 115, 22, 0.25);
+  background: #ffffff;
+  color: #000000;
+  transform: translateX(2px);
 }
 
 /* ── Responsive Queries ─────────────────────────── */
