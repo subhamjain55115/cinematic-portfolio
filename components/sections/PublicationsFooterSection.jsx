@@ -29,7 +29,7 @@ const MOBILE_SOCIAL_ICONS = {
   LinkedIn:  <FaLinkedinIn  size={20} />,
   Instagram: <FaInstagram size={20} />,
 }
-const HERO_SOCIAL_LABELS = ['GitHub', 'LinkedIn', 'Instagram']
+const HERO_SOCIAL_LABELS = ['LinkedIn']
 
 const VID_VERT = `
   varying vec2 vUv;
@@ -550,7 +550,7 @@ export default function PublicationsFooterSection() {
               <div className={styles.footerInfo}>
                 <p className={styles.footerDescription}>{profile.description}</p>
                 <div className={styles.footerLinks}>
-                  {profile.socials.slice(0, 4).map((s, i) => (
+                  {profile.socials.filter(s => s.label === 'LinkedIn').map((s, i) => (
                     <span key={s.label} className={styles.footerLinkWrap}>
                       {i > 0 && <span className={styles.footerPipe}>|</span>}
                       <a

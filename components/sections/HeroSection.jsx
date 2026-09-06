@@ -14,7 +14,7 @@ import styles from '@/styles/sections/HeroSection.module.css'
 const HeroBackground = dynamic(() => import('@/components/three/HeroBackground'), { ssr: false })
 
 const SOCIAL_ICON_MAP = { GitHub: FaGithub, LinkedIn: FaLinkedinIn, Instagram: FaInstagram }
-const SIDEBAR_LABELS  = ['Instagram', 'GitHub', 'LinkedIn']
+const SIDEBAR_LABELS  = ['LinkedIn']
 
 function splitTagline(text, highlight) {
   if (!highlight) return [text]

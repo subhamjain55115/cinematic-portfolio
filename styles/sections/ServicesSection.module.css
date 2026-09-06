@@ -32,7 +32,7 @@
   transform: translateX(-50%);
   width: 600px;
   height: 300px;
-  background: radial-gradient(circle, rgba(249, 115, 22, 0.08) 0%, rgba(0, 0, 0, 0) 70%);
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent, #f97316) 10%, transparent) 0%, rgba(0, 0, 0, 0) 70%);
   pointer-events: none;
   z-index: 0;
 }
@@ -133,9 +133,9 @@
 
 .tabBtnActive {
   color: #ffffff !important;
-  background: rgba(249, 115, 22, 0.15) !important;
-  border: 1px solid rgba(249, 115, 22, 0.35);
-  box-shadow: 0 0 16px rgba(249, 115, 22, 0.12);
+  background: color-mix(in srgb, var(--accent, #f97316) 18%, transparent) !important;
+  border: 1px solid color-mix(in srgb, var(--accent, #f97316) 45%, transparent);
+  box-shadow: 0 0 16px color-mix(in srgb, var(--accent, #f97316) 20%, transparent);
 }
 
 .badge {
@@ -167,7 +167,7 @@
   overscroll-behavior: contain;
   -webkit-overflow-scrolling: touch;
   scrollbar-width: thin;
-  scrollbar-color: rgba(249, 115, 22, 0.45) rgba(255, 255, 255, 0.04);
+  scrollbar-color: color-mix(in srgb, var(--accent, #f97316) 45%, transparent) rgba(255, 255, 255, 0.04);
 }
 
 .container::-webkit-scrollbar {
@@ -178,12 +178,12 @@
   border-radius: 4px;
 }
 .container::-webkit-scrollbar-thumb {
-  background: rgba(249, 115, 22, 0.35);
+  background: color-mix(in srgb, var(--accent, #f97316) 35%, transparent);
   border-radius: 4px;
   transition: background 0.2s ease;
 }
 .container::-webkit-scrollbar-thumb:hover {
-  background: rgba(249, 115, 22, 0.7);
+  background: color-mix(in srgb, var(--accent, #f97316) 70%, transparent);
 }
 
 /* ── Services Grid ──────────────────────────────── */
@@ -341,7 +341,7 @@
   text-decoration: none;
   background: var(--accent, #f97316);
   color: #080808;
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  border: 1px solid color-mix(in srgb, var(--accent, #f97316) 35%, transparent);
   padding: 0.35rem 0.75rem;
   border-radius: 6px;
   transition: all 0.2s ease;
@@ -445,9 +445,9 @@
 }
 
 .templateCard:hover {
-  border-color: rgba(249, 115, 22, 0.4);
+  border-color: color-mix(in srgb, var(--accent, #f97316) 60%, transparent);
   transform: translateY(-4px);
-  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 24px rgba(249, 115, 22, 0.1);
+  box-shadow: 0 16px 36px rgba(0, 0, 0, 0.6), 0 0 24px color-mix(in srgb, var(--accent, #f97316) 20%, transparent);
 }
 
 .browserHeader {
@@ -567,8 +567,8 @@
   letter-spacing: 0.06em;
   text-transform: uppercase;
   color: var(--accent, #f97316);
-  background: rgba(249, 115, 22, 0.1);
-  border: 1px solid rgba(249, 115, 22, 0.2);
+  background: color-mix(in srgb, var(--accent, #f97316) 12%, transparent);
+  border: 1px solid color-mix(in srgb, var(--accent, #f97316) 30%, transparent);
   padding: 0.2rem 0.55rem;
   border-radius: 4px;
 }

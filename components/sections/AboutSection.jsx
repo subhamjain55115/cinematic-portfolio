@@ -17,7 +17,9 @@ const ICON_MAP = {
   WhatsApp: FaWhatsapp,
 }
 
-const SOCIALS = profile.socials.map(s => ({ Icon: ICON_MAP[s.label], href: s.href, label: s.label }))
+const SOCIALS = profile.socials
+  .filter(s => s.label === 'LinkedIn')
+  .map(s => ({ Icon: ICON_MAP[s.label], href: s.href, label: s.label }))
 
 export default function AboutSection() {
   const { about } = usePortfolio()

@@ -180,7 +180,7 @@ export default function ServicesSection() {
                     className={styles.inquireBtn}
                     id={`inquire-btn-${srv.id || idx}`}
                   >
-                    <span>Inquire</span>
+                    <span>Hire Me</span>
                     <ArrowUpRight size={13} />
                   </a>
                 </div>

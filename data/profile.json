@@ -166,11 +166,7 @@
     }
   ],
   "socials": [
-    { "label": "GitHub",    "href": "https://github.com/subhamjain55115" },
     { "label": "LinkedIn",  "href": "https://www.linkedin.com/in/shubhamjain55115/" },
-    { "label": "Instagram", "href": "https://www.instagram.com/subhamjain55115/" },
-    { "label": "Facebook",  "href": "https://www.facebook.com/subhamjain55115" },
-    { "label": "Threads",   "href": "https://www.threads.com/@subhamjain55115" },
     { "label": "WhatsApp",  "href": "https://wa.me/917023055115?text=Hi%20Subham" }
   ],
   "services": [

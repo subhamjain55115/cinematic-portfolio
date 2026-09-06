@@ -107,7 +107,7 @@ export default function Navbar() {
         <div className="flex items-center gap-2">
           <Link
             href="/admin"
-            className="text-xs px-3 py-1.5 rounded-full border border-orange-400/40 text-orange-500 hover:bg-orange-500/10 transition-colors font-medium"
+            className={styles.adminBtn}
             title="Admin Portal"
           >
             Admin
